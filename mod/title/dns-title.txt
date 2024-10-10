@@ -1,0 +1,6 @@
+[Adblock Plus 2.0]
+! Title: AdRules DNS List
+! Homepage: https://5i計劃通行.net.cn
+! Powerd by 5️⃣i計劃通行
+! Expires: 1 (update frequency)
+! Description: The DNS Filters
