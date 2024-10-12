@@ -1,7 +1,7 @@
 [Adblock Plus 2.0]
-! Title: AdRules AdBlock List
-! Homepage: https://5i計劃通行.net.cn
-! Powerd by 5️⃣i計劃通行
+! Title: AdRules 橘猫のとおり道 AdBlock List
+! Homepage: https://`ll焦糖.先生.net.cn
+! Powerd by `ll焦糖.先生
 ! Expires: 1 day (update frequency)
 ! Description: Merge from EasyList,EasyListChina etc. and Add Some Rules.
-! 
+
