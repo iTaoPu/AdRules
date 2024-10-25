@@ -1,0 +1,7 @@
+[Adblock Plus 2.0]
+! Title: AdRules 橘猫のとおり道 AdBlock List
+! Homepage: https://`ll焦糖.先生.net.cn
+! Powerd by `ll焦糖.先生
+! Expires: 24 hours (update frequency)
+! Description: Merge from EasyList,EasyListChina etc. and Add Some Rules.
+! ------------------------------------
