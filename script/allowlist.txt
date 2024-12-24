@@ -148,6 +148,8 @@ liveweb\*\.msstatic\.com
 miniapp.bilibili.com
 #bili评论
 grpc.biliapi.net
+#bili直播
+live-trace.bilibili.com
 #! 直播与短视频平台 白名单 End !#
 
 #! 未分类大厂 白名单 Start !#
