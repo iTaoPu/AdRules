@@ -1,0 +1,8 @@
+[Adblock Plus 2.0]
+! Title: AdRules 橘猫のとおり道 DNS List
+! Homepage: https://焦糖先生.net.cn
+! Powerd by 🐌焦糖.先生ઇଓ
+! Expires: 24 hours (update frequency)
+! Description: The DNS Filters
+! ------------------------------------
+

@@ -1,0 +1,7 @@
+[Adblock Plus 2.0]
+! Title: AdRules 橘猫のとおり道 AdBlock List Lite 
+! Homepage: https://焦糖先生.net.cn
+! Powerd by 🐌焦糖.先生ઇଓ
+! Expires: 24 hours (update frequency)
+! Description: AdRules AdBlock List's Lite Version, And Remove Some Filters
+! ------------------------------------
