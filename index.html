@@ -282,7 +282,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
-            background: linear-gradient(135deg, #f8f9ff, #e6f3ff);
+            background: linear-gradient(135deg, #f8f9ff, #baddff);
             padding: 2rem;
             border-radius: 16px;
             border: 1px solid rgba(102, 126, 234, 0.1);
@@ -400,9 +400,16 @@
 
         footer .emoji {
             font-size: 1.5rem;
+            color: #333;
             margin-bottom: 1rem;
         }
 
+        body.dark-mode footer .emoji {
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+        }        
+        
         footer a {
             color: #667eea;
             text-decoration: none;
@@ -675,7 +682,7 @@
         </main>
 
         <footer>
-            <div class="emoji">（￣︶￣）↗</div>
+            <div class="emoji" onclick="alert('Ciallo～(∠・ω< )⌒☆')" style="cursor: pointer;">Ciallo～(∠・ω< )⌒☆</div>
             <p>❔Have any questions? Please go to <a href="https://github.com/Cats-Team/AdRules#chat">Chat</a></p>
             <p>📃Want to see the upstream rules? <a
                     href="https://github.com/Cats-Team/AdRules/blob/script/Source.md">Source</a></p>
