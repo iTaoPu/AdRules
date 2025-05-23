@@ -83,8 +83,8 @@
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin-top: 8rem;
-            margin-bottom: auto;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
             transition: all 0.3s ease;
         }
 
@@ -209,7 +209,9 @@
             transform: translateY(-10px);
             transition: all 0.3s ease;
             margin-top: 0.5rem;
-            overflow: hidden;
+            max-height: 350px; 
+            overflow-y: auto; /* 添加垂直滚动条 */
+            overflow-x: hidden;
         }
 
         body.dark-mode .options-container {
