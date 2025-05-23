@@ -733,10 +733,6 @@
         const container = document.querySelector('.container');
         let hasSelectedTool = false;
 
-        // 初始状态：禁止滚动并居中显示
-        document.documentElement.classList.add('no-scroll');
-        document.body.classList.add('no-scroll');
-
         // 切换选项显示/隐藏
         selectButton.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -755,13 +751,6 @@
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
                 const text = option.textContent;
-
-                // 第一次选择工具时，允许滚动
-                if (!hasSelectedTool) {
-                    hasSelectedTool = true;
-                    document.documentElement.classList.remove('no-scroll');
-                    document.body.classList.remove('no-scroll');
-                }
 
                 // 更新按钮文本
                 selectButton.querySelector('span').textContent = text;
