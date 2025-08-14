@@ -293,6 +293,9 @@ instant.page
 #game randomly stutters or freezes. #219
 vs-api.voodoo-tech.io
 
+#亚通的纪录
+ytelc.com
+
 #! 乱七八糟的域名 白名单 End !#
 
 
