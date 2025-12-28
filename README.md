@@ -11,7 +11,7 @@
 </centre>
 
 <p align="center">
-  <img src="[言家稗子-标准色版.png](https://raw.githubusercontent.com/iTaoPu/iTaoPu.Github.io/List/%E8%A8%80%E5%AE%B6%E7%A8%97%E5%AD%90-%E6%A0%87%E5%87%86%E8%89%B2%E7%89%88.png)" alt="微信公眾號" />
+  <img src="https://raw.githubusercontent.com/iTaoPu/iTaoPu.Github.io/List/%E8%A8%80%E5%AE%B6%E7%A8%97%E5%AD%90-%E6%A0%87%E5%87%86%E8%89%B2%E7%89%88.png" alt="微信公眾號" />
 </p>
 
 ## Desc.
