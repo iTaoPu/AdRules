@@ -10,10 +10,6 @@
 
 </centre>
 
-<p align="center">
-  <img src="https://iTaoPu.Github.io/言家稗子-标准色版.png" alt="微信公眾號" />
-</p>
-
 ## Desc.
 List for blocking ads in the Chinese region
   
@@ -61,7 +57,11 @@ The WTFPL License is a permissive license that allows you to do whatever you wan
 **📝 https://github.com/Cats-Team/AdRules/issues**  
 **💬 https://github.com/Cats-Team/AdRules/discussions**
 
+<p align="center">
+  <img src="https://iTaoPu.Github.io/言家稗子-标准色版.png" alt="微信公眾號" />
+</p>
+
 ## Sponsor
-[Afdian](https://afdian.com/a/Cats-Team)  
+[Afdian](https://ifdian.net/a/CNiao)  
 
 [<code><kbd>Back to top</kbd></code>](#)
