@@ -96,6 +96,7 @@
             const selectLabel = document.getElementById('select-label');
             const selectArrow = document.getElementById('select-arrow');
             const contentArea = document.getElementById('content-area');
+            const toast = document.getElementById('toast-notification');
 
             let optionsHtml = '';
             for (const group in toolsData) {
@@ -134,7 +135,6 @@
 
             function displayToolContent(tool) {
                 const renderedContent = md.render(tool.content);
-                // 预解析链接用于"Add to Tool"
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = renderedContent;
                 const linkTag = tempDiv.querySelector('a');
@@ -161,26 +161,45 @@
                 setTimeout(() => contentArea.querySelector('.tool-content-wrapper').classList.remove('opacity-0'), 50);
             }
 
-            // 修复后的 Copy 逻辑
+            // 核心修复：更健壮的复制与弹窗逻辑
+            function showToast() {
+                toast.classList.remove('hidden');
+                toast.classList.add('flex');
+                setTimeout(() => { toast.classList.add('hidden'); toast.classList.remove('flex'); }, 3000);
+            }
+
+            function fallbackCopyText(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed"; // 避免移动端弹窗导致的页面滚动
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) showToast();
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                }
+                document.body.removeChild(textArea);
+            }
+
             contentArea.addEventListener('click', (e) => {
                 const button = e.target.closest('button[data-action="copy"]');
                 if (!button) return;
 
-                // 直接从展示区域的 <a> 标签中获取解析后的完整 href
                 const linkInContent = contentArea.querySelector('.tool-content-inner a');
                 if (linkInContent && linkInContent.href) {
                     const textToCopy = linkInContent.href;
                     
                     if (navigator.clipboard && window.isSecureContext) {
-                        navigator.clipboard.writeText(textToCopy).then(showToast);
+                        navigator.clipboard.writeText(textToCopy)
+                            .then(showToast)
+                            .catch(() => fallbackCopyText(textToCopy));
                     } else {
-                        // 兼容方案
-                        const textArea = document.createElement("textarea");
-                        textArea.value = textToCopy;
-                        document.body.appendChild(textArea);
-                        textArea.select();
-                        try { document.execCommand('copy'); showToast(); } catch (err) { console.error(err); }
-                        document.body.removeChild(textArea);
+                        fallbackCopyText(textToCopy);
                     }
                 }
             });
@@ -201,13 +220,6 @@
                 document.getElementById('theme-toggle-light-icon').classList.toggle('hidden');
                 localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
             });
-
-            const toast = document.getElementById('toast-notification');
-            function showToast() {
-                toast.classList.remove('hidden');
-                toast.classList.add('flex');
-                setTimeout(() => { toast.classList.add('hidden'); toast.classList.remove('flex'); }, 3000);
-            }
 
             document.getElementById('current-year').textContent = new Date().getFullYear();
         });
