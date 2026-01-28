@@ -53,12 +53,10 @@ This project is licensed under the WTFPL License - see the LICENSE file for deta
 
 The WTFPL License is a permissive license that allows you to do whatever you want with the code, without any restrictions or obligations. It is a short and simple license that promotes freedom and flexibility.
 
-## Chat
-
-**📝 https://github.com/Cats-Team/AdRules/issues**  
-**💬 https://github.com/Cats-Team/AdRules/discussions**
-
 ## Sponsor
-[Afdian](https://afdian.com/a/Cats-Team)  
+爱发电 https://ifdian.net/a/CNiao
+
+<p align="center">
+  <img src="https://iTaoPu.Github.io/言家稗子-标准色版.png" alt="微信公眾號" />
 
 [<code><kbd>Back to top</kbd></code>](#)
