@@ -1,0 +1,8 @@
+[Adblock Plus 2.0]
+! Title: AdRules 橘猫のとおり道 DNS List
+! Homepage: https://i叚娤.倖鍢.net.cn
+! Powerd by i叚娤.倖鍢
+! Expires: 24 hours (update frequency)
+! Description: The DNS Filters
+! ------------------------------------
+
