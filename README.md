@@ -18,9 +18,6 @@ Block Ads, Trackers, Malware, HTTPDNS, PCDN.
 📃Want to see the upstream rules? [Source](/Source.md)
 <br>  
 
-### 📃 Rules List
-
-
 > [!CAUTION]
 > Use the right filter on the right platform or suffer the consequences.
 
