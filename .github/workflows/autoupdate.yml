@@ -1,95 +1,234 @@
 name: Update Rules
 on:
   schedule:
-  - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *'
   push:
     paths:
-    - 'script/*'
-    - 'mod/*'
-    - 'index.html'
-    - '.github/workflows/*'
-
+      - 'script/*'
+      - 'mod/*'
+      - 'index.html'
+      - '.github/workflows/*'
   workflow_dispatch:
-
   repository_dispatch:
     types:
-    - Manual-Update
+      - Manual-Update
 
 jobs:
   update-rules:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
+    # 步骤1：检出代码
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    # 步骤2：设置Python环境
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
-
-    - name: Update Upstream
+    
+    # 步骤3：安装依赖并更新上游
+    - name: Install Dependencies and Update Upstream
       continue-on-error: false
       run: |
-        pip install requests
-        bash ./script/update_upstream.sh
-        tar -czvf archive.tar.gz ./tmp/*
-
+        echo "开始安装依赖..."
+        pip install requests --quiet
+        pip install beautifulsoup4 lxml --quiet
+        
+        echo "开始更新上游规则..."
+        if bash ./script/update_upstream.sh; then
+          echo "上游更新成功"
+          
+          # 检查tmp目录是否存在且非空
+          if [ -d "./tmp" ] && [ "$(ls -A ./tmp)" ]; then
+            echo "打包临时文件..."
+            tar -czvf archive.tar.gz ./tmp/*
+            echo "打包完成，文件大小: $(du -h archive.tar.gz | cut -f1)"
+          else
+            echo "警告：tmp目录为空或不存在"
+            tar -czvf archive.tar.gz ./tmp 2>/dev/null || touch archive.tar.gz
+          fi
+        else
+          echo "错误：上游更新失败，退出码：$?"
+          exit 3
+        fi
+    
+    # 步骤4：上传临时文件作为工件
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: archive.tar.gz
         path: archive.tar.gz
-
+        retention-days: 1
+    
+    # 步骤5：构建规则文件
     - name: Build Rules
       continue-on-error: false
       run: |
+        echo "开始构建规则..."
+        set -e  # 遇到任何错误立即退出
+        
+        # 检查script目录是否存在
+        if [ ! -d "./script" ]; then
+          echo "错误：script目录不存在"
+          exit 3
+        fi
+        
+        # 依次执行构建脚本
+        echo "执行 update_content.sh..."
         bash ./script/update_content.sh
+        
+        echo "执行 update_dns.sh..."
         bash ./script/update_dns.sh
+        
+        # 清理临时文件
         rm -f archive.tar.gz
-
+        echo "规则构建完成"
+    
+    # 步骤6：更新其他规则
     - name: Update other rules
       run: |
+        echo "下载额外规则..."
         mkdir -p rules
-        cd rules
-        rm -f *.txt
-        wget https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
-        cd ../
-
+        
+        # 使用curl代替wget，更好的错误处理
+        curl -f -L -o rules/jiekouAD.txt \
+          https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt \
+          || echo "警告：下载额外规则失败，继续执行..."
+        
+        # 检查下载的文件
+        if [ -s rules/jiekouAD.txt ]; then
+          echo "额外规则下载成功，文件大小: $(wc -l < rules/jiekouAD.txt) 行"
+        fi
+    
+    # 步骤7：推送到主仓库
     - name: Git push assets to Github
       run: |
-        git init
-        git config --local user.name "actions"
-        git config --local user.email "action@github.com"
-        git checkout --orphan main
-        git rm -rf .github
-        git rm -rf script
-        git rm -rf *.md
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git push -f -u origin main
-
-    - name: Git push assets to other repos
+        echo "推送到GitHub主仓库..."
+        
+        # 设置Git配置
+        git config --local user.name "github-actions"
+        git config --local user.email "github-actions@github.com"
+        
+        # 强制推送更新
+        echo "添加文件..."
+        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || true
+        
+        echo "提交更改..."
+        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        
+        echo "推送更改..."
+        if git push origin main --force; then
+          echo "GitHub推送成功"
+        else
+          echo "错误：GitHub推送失败"
+          exit 128
+        fi
+    
+    # 步骤8：推送到GitLab（分离步骤，便于调试）
+    - name: Git push assets to GitLab
       continue-on-error: true
       run: |
+        echo "推送到GitLab..."
+        
+        if [ -z "${{ secrets.GITLAB_TOKEN }}" ]; then
+          echo "警告：GITLAB_TOKEN未设置，跳过GitLab推送"
+          exit 0
+        fi
+        
+        # 重新初始化Git仓库
         rm -rf .git/
         git init
-        git config --local user.name "hacamer"
-        git config --local user.email "${{ secrets.USEREMAIL }}"
+        
+        # 配置Git用户（注意：这里使用的是cats-team用户）
+        git config user.email "${{ secrets.USEREMAIL }}"
+        git config user.name "cats-team"
+        
+        # 添加GitLab远程仓库
         git remote add origin "https://cats-team:${{ secrets.GITLAB_TOKEN }}@gitlab.com/cats-team/adrules.git"
-        git remote set-url --add origin "https://hacamer:${{ secrets.BITBUCKET_TOKEN }}@bitbucket.org/hacamer/adrules.git"
-        git checkout --orphan clearhistory
+        
+        # 添加并推送文件
         git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
-        git commit -am "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git branch -m main
-        git push --force --set-upstream origin main
-
+        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        
+        # 强制推送到GitLab
+        if git push --force origin main; then
+          echo "GitLab推送成功"
+        else
+          echo "警告：GitLab推送失败，但这不会阻止工作流运行"
+        fi
+    
+    # 步骤9：推送到Bitbucket（分离步骤，便于调试）
+    - name: Git push assets to Bitbucket
+      continue-on-error: true
+      run: |
+        echo "推送到Bitbucket..."
+        
+        if [ -z "${{ secrets.BITBUCKET_TOKEN }}" ]; then
+          echo "警告：BITBUCKET_TOKEN未设置，跳过Bitbucket推送"
+          exit 0
+        fi
+        
+        # 重新初始化Git仓库
+        rm -rf .git/
+        git init
+        
+        # 配置Git用户（注意：这里使用的是hacamer用户）
+        git config user.email "${{ secrets.USEREMAIL }}"
+        git config user.name "hacamer"
+        
+        # 添加Bitbucket远程仓库
+        git remote add origin "https://hacamer:${{ secrets.BITBUCKET_TOKEN }}@bitbucket.org/hacamer/adrules.git"
+        
+        # 添加并推送文件
+        git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
+        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        
+        # 强制推送到Bitbucket
+        if git push --force origin main; then
+          echo "Bitbucket推送成功"
+        else
+          echo "警告：Bitbucket推送失败，但这不会阻止工作流运行"
+        fi
+    
+    # 步骤10：触发其他构建服务（如Cloudflare Pages）
     - name: Auto Built
       continue-on-error: true
       run: |
-        curl -X POST "${{ secrets.CF_TOKEN }}"
-
+        echo "触发外部构建..."
+        
+        if [ -z "${{ secrets.CF_TOKEN }}" ]; then
+          echo "警告：CF_TOKEN未设置，跳过构建触发"
+          exit 0
+        fi
+        
+        # 调用外部API触发构建
+        response=$(curl -s -o /dev/null -w "%{http_code}" \
+          -X POST "${{ secrets.CF_TOKEN }}")
+        
+        if [ "$response" -eq 200 ] || [ "$response" -eq 201 ]; then
+          echo "构建触发成功，状态码: $response"
+        else
+          echo "警告：构建触发返回状态码: $response"
+        fi
+    
+    # 步骤11：清理旧的工作流运行
     - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
         retain_days: 2
         keep_minimum_runs: 5
+      
+    # 步骤12：最终状态报告
+    - name: Workflow Summary
+      if: always()
+      run: |
+        echo "=== 工作流执行摘要 ==="
+        echo "执行时间: $(date)"
+        echo "仓库: ${{ github.repository }}"
+        echo "触发方式: ${{ github.event_name }}"
+        echo "工作流状态: ${{ job.status }}"
+        echo "======================"
