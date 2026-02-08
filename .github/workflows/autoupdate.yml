@@ -9,9 +9,6 @@ on:
       - 'index.html'
       - '.github/workflows/*'
   workflow_dispatch:
-  repository_dispatch:
-    types:
-      - Manual-Update
 
 jobs:
   update-rules:
@@ -23,39 +20,46 @@ jobs:
         fetch-depth: 0
     
     # 步骤2：设置Python环境
-    - name: Setup Python
+    - name: Setup Python and Install Dependencies
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'
     
-    # 步骤3：安装依赖并更新上游
-    - name: Install Dependencies and Update Upstream
-      continue-on-error: false
+    # 步骤3：更新上游规则
+    - name: Update Upstream Rules
       run: |
-        echo "开始安装依赖..."
-        pip install requests --quiet
-        pip install beautifulsoup4 lxml --quiet
+        echo "开始安装Python依赖库..."
+        pip install --quiet requests beautifulsoup4 lxml
         
-        echo "开始更新上游规则..."
-        if bash ./script/update_upstream.sh; then
-          echo "上游更新成功"
-          
-          # 检查tmp目录是否存在且非空
-          if [ -d "./tmp" ] && [ "$(ls -A ./tmp)" ]; then
-            echo "打包临时文件..."
-            tar -czvf archive.tar.gz ./tmp/*
-            echo "打包完成，文件大小: $(du -h archive.tar.gz | cut -f1)"
-          else
-            echo "警告：tmp目录为空或不存在"
-            tar -czvf archive.tar.gz ./tmp 2>/dev/null || touch archive.tar.gz
-          fi
-        else
-          echo "错误：上游更新失败，退出码：$?"
+        echo "执行上游规则更新..."
+        if [ ! -f "./script/update_upstream.sh" ]; then
+          echo "错误：update_upstream.sh 脚本不存在"
           exit 3
         fi
+        
+        # 执行更新脚本
+        bash ./script/update_upstream.sh
+        
+        # 检查脚本执行结果
+        if [ $? -ne 0 ]; then
+          echo "错误：上游规则更新失败"
+          exit 3
+        fi
+        
+        echo "检查临时文件..."
+        if [ -d "./tmp" ] && [ "$(ls -A ./tmp 2>/dev/null)" ]; then
+          echo "打包临时文件..."
+          tar -czvf archive.tar.gz ./tmp/*
+          echo "打包完成，文件大小: $(du -h archive.tar.gz | cut -f1)"
+        else
+          echo "警告：tmp目录为空或不存在"
+          touch archive.tar.gz  # 创建空文件避免后续错误
+        fi
+        
+        echo "上游规则更新完成"
     
-    # 步骤4：上传临时文件作为工件
-    - name: Upload artifacts
+    # 步骤4：上传临时文件作为工件（可选）
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: archive.tar.gz
@@ -63,172 +67,131 @@ jobs:
         retention-days: 1
     
     # 步骤5：构建规则文件
-    - name: Build Rules
-      continue-on-error: false
+    - name: Build Rule Files
       run: |
-        echo "开始构建规则..."
-        set -e  # 遇到任何错误立即退出
+        echo "开始构建规则文件..."
         
-        # 检查script目录是否存在
+        # 检查脚本目录
         if [ ! -d "./script" ]; then
           echo "错误：script目录不存在"
           exit 3
         fi
         
-        # 依次执行构建脚本
+        # 执行构建脚本
         echo "执行 update_content.sh..."
-        bash ./script/update_content.sh
+        if [ -f "./script/update_content.sh" ]; then
+          bash ./script/update_content.sh
+          if [ $? -ne 0 ]; then
+            echo "错误：update_content.sh 执行失败"
+            exit 3
+          fi
+        else
+          echo "警告：update_content.sh 不存在，跳过"
+        fi
         
         echo "执行 update_dns.sh..."
-        bash ./script/update_dns.sh
+        if [ -f "./script/update_dns.sh" ]; then
+          bash ./script/update_dns.sh
+          if [ $? -ne 0 ]; then
+            echo "错误：update_dns.sh 执行失败"
+            exit 3
+          fi
+        else
+          echo "警告：update_dns.sh 不存在，跳过"
+        fi
         
         # 清理临时文件
         rm -f archive.tar.gz
-        echo "规则构建完成"
+        echo "规则文件构建完成"
     
-    # 步骤6：更新其他规则
-    - name: Update other rules
+    # 步骤6：更新其他规则（可选）
+    - name: Update Additional Rules
       run: |
-        echo "下载额外规则..."
-        mkdir -p rules
+        echo "更新额外规则..."
         
-        # 使用curl代替wget，更好的错误处理
-        curl -f -L -o rules/jiekouAD.txt \
+        # 创建规则目录
+        mkdir -p rules 2>/dev/null || true
+        
+        # 下载额外规则文件（使用curl，更好的错误处理）
+        echo "下载 jiekouAD.txt..."
+        curl -f -L -s -o rules/jiekouAD.txt \
           https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt \
-          || echo "警告：下载额外规则失败，继续执行..."
+          && echo "下载成功" || echo "警告：下载失败，跳过"
         
         # 检查下载的文件
-        if [ -s rules/jiekouAD.txt ]; then
-          echo "额外规则下载成功，文件大小: $(wc -l < rules/jiekouAD.txt) 行"
+        if [ -f "rules/jiekouAD.txt" ]; then
+          if [ -s "rules/jiekouAD.txt" ]; then
+            echo "规则文件有效，行数: $(wc -l < rules/jiekouAD.txt)"
+          else
+            echo "警告：规则文件为空"
+            rm -f rules/jiekouAD.txt
+          fi
         fi
     
-    # 步骤7：推送到主仓库
-    - name: Git push assets to Github
+    # 步骤7：提交并推送到当前GitHub仓库
+    - name: Commit and Push to GitHub
       run: |
-        echo "推送到GitHub主仓库..."
+        echo "准备提交更新..."
         
-        # 设置Git配置
-        git config --local user.name "github-actions"
-        git config --local user.email "github-actions@github.com"
+        # 配置Git用户
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
         
-        # 强制推送更新
-        echo "添加文件..."
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || true
+        # 检查是否有文件变更
+        echo "检查文件变更状态..."
+        git status --porcelain
         
-        echo "提交更改..."
-        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
+        # 添加所有规则相关文件
+        echo "添加需要提交的文件..."
         
-        echo "推送更改..."
-        if git push origin main --force; then
-          echo "GitHub推送成功"
+        # 先添加已知文件类型
+        git add *.txt *.conf *.list *.json *.html *.srs *.mrs 2>/dev/null || true
+        
+        # 添加规则目录下的文件
+        if [ -d "rules" ]; then
+          git add rules/* 2>/dev/null || true
+        fi
+        
+        # 添加mod目录下的文件
+        if [ -d "mod" ]; then
+          git add mod/* 2>/dev/null || true
+        fi
+        
+        # 检查是否有需要提交的变更
+        if git diff --cached --quiet; then
+          echo "没有需要提交的变更"
+          exit 0
+        fi
+        
+        # 提交变更
+        echo "提交变更..."
+        commit_message="🤖 Auto Update: $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')"
+        
+        git commit -m "$commit_message"
+        
+        # 推送到远程仓库
+        echo "推送到远程仓库..."
+        git push origin HEAD:${{ github.ref_name }}
+        
+        if [ $? -eq 0 ]; then
+          echo "✅ 推送成功"
         else
-          echo "错误：GitHub推送失败"
+          echo "❌ 推送失败"
           exit 128
         fi
     
-    # 步骤8：推送到GitLab（分离步骤，便于调试）
-    - name: Git push assets to GitLab
-      continue-on-error: true
-      run: |
-        echo "推送到GitLab..."
-        
-        if [ -z "${{ secrets.GITLAB_TOKEN }}" ]; then
-          echo "警告：GITLAB_TOKEN未设置，跳过GitLab推送"
-          exit 0
-        fi
-        
-        # 重新初始化Git仓库
-        rm -rf .git/
-        git init
-        
-        # 配置Git用户（注意：这里使用的是cats-team用户）
-        git config user.email "${{ secrets.USEREMAIL }}"
-        git config user.name "cats-team"
-        
-        # 添加GitLab远程仓库
-        git remote add origin "https://cats-team:${{ secrets.GITLAB_TOKEN }}@gitlab.com/cats-team/adrules.git"
-        
-        # 添加并推送文件
-        git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
-        
-        # 强制推送到GitLab
-        if git push --force origin main; then
-          echo "GitLab推送成功"
-        else
-          echo "警告：GitLab推送失败，但这不会阻止工作流运行"
-        fi
-    
-    # 步骤9：推送到Bitbucket（分离步骤，便于调试）
-    - name: Git push assets to Bitbucket
-      continue-on-error: true
-      run: |
-        echo "推送到Bitbucket..."
-        
-        if [ -z "${{ secrets.BITBUCKET_TOKEN }}" ]; then
-          echo "警告：BITBUCKET_TOKEN未设置，跳过Bitbucket推送"
-          exit 0
-        fi
-        
-        # 重新初始化Git仓库
-        rm -rf .git/
-        git init
-        
-        # 配置Git用户（注意：这里使用的是hacamer用户）
-        git config user.email "${{ secrets.USEREMAIL }}"
-        git config user.name "hacamer"
-        
-        # 添加Bitbucket远程仓库
-        git remote add origin "https://hacamer:${{ secrets.BITBUCKET_TOKEN }}@bitbucket.org/hacamer/adrules.git"
-        
-        # 添加并推送文件
-        git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')" || exit 0
-        
-        # 强制推送到Bitbucket
-        if git push --force origin main; then
-          echo "Bitbucket推送成功"
-        else
-          echo "警告：Bitbucket推送失败，但这不会阻止工作流运行"
-        fi
-    
-    # 步骤10：触发其他构建服务（如Cloudflare Pages）
-    - name: Auto Built
-      continue-on-error: true
-      run: |
-        echo "触发外部构建..."
-        
-        if [ -z "${{ secrets.CF_TOKEN }}" ]; then
-          echo "警告：CF_TOKEN未设置，跳过构建触发"
-          exit 0
-        fi
-        
-        # 调用外部API触发构建
-        response=$(curl -s -o /dev/null -w "%{http_code}" \
-          -X POST "${{ secrets.CF_TOKEN }}")
-        
-        if [ "$response" -eq 200 ] || [ "$response" -eq 201 ]; then
-          echo "构建触发成功，状态码: $response"
-        else
-          echo "警告：构建触发返回状态码: $response"
-        fi
-    
-    # 步骤11：清理旧的工作流运行
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        repository: ${{ github.repository }}
-        retain_days: 2
-        keep_minimum_runs: 5
-      
-    # 步骤12：最终状态报告
+    # 步骤8：工作流执行摘要
     - name: Workflow Summary
       if: always()
       run: |
-        echo "=== 工作流执行摘要 ==="
+        echo "========================================"
+        echo "         GitHub Actions 执行摘要        "
+        echo "========================================"
+        echo "工作流名称: Update Rules"
         echo "执行时间: $(date)"
         echo "仓库: ${{ github.repository }}"
-        echo "触发方式: ${{ github.event_name }}"
-        echo "工作流状态: ${{ job.status }}"
-        echo "======================"
+        echo "触发事件: ${{ github.event_name }}"
+        echo "Git引用: ${{ github.ref }}"
+        echo "提交SHA: ${{ github.sha }}"
+        echo "执行结果: ${{ job.status }}"
+        echo "========================================"
