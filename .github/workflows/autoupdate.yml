@@ -14,52 +14,60 @@ jobs:
   update-rules:
     runs-on: ubuntu-latest
     steps:
-    # 步骤1：检出代码
-    - uses: actions/checkout@v4
+    # 步骤1：检出main分支代码
+    - name: Checkout main branch
+      uses: actions/checkout@v4
       with:
+        ref: main
         fetch-depth: 0
     
     # 步骤2：设置Python环境
-    - name: Setup Python and Install Dependencies
+    - name: Setup Python Environment
       uses: actions/setup-python@v5
       with:
         python-version: '3.x'
     
-    # 步骤3：更新上游规则
-    - name: Update Upstream Rules
+    # 步骤3：安装依赖并更新上游规则
+    - name: Install Dependencies and Update Upstream
       run: |
-        echo "开始安装Python依赖库..."
+        echo "🚀 开始安装Python依赖..."
         pip install --quiet requests beautifulsoup4 lxml
         
-        echo "执行上游规则更新..."
+        echo "📥 执行上游规则更新..."
+        
+        # 检查脚本是否存在
         if [ ! -f "./script/update_upstream.sh" ]; then
-          echo "错误：update_upstream.sh 脚本不存在"
+          echo "❌ 错误：找不到 update_upstream.sh 脚本"
           exit 3
         fi
         
-        # 执行更新脚本
+        # 给脚本添加执行权限
+        chmod +x ./script/update_upstream.sh
+        
+        # 执行上游更新脚本
         bash ./script/update_upstream.sh
         
-        # 检查脚本执行结果
+        # 检查执行结果
         if [ $? -ne 0 ]; then
-          echo "错误：上游规则更新失败"
+          echo "❌ 错误：上游规则更新脚本执行失败"
           exit 3
         fi
         
-        echo "检查临时文件..."
+        # 检查并打包临时文件
+        echo "📦 处理临时文件..."
         if [ -d "./tmp" ] && [ "$(ls -A ./tmp 2>/dev/null)" ]; then
-          echo "打包临时文件..."
+          echo "打包临时文件到 archive.tar.gz"
           tar -czvf archive.tar.gz ./tmp/*
-          echo "打包完成，文件大小: $(du -h archive.tar.gz | cut -f1)"
+          echo "📊 打包完成，文件大小: $(du -h archive.tar.gz | cut -f1)"
         else
-          echo "警告：tmp目录为空或不存在"
-          touch archive.tar.gz  # 创建空文件避免后续错误
+          echo "⚠️ 警告：tmp目录为空或不存在，创建空文件"
+          touch archive.tar.gz
         fi
         
-        echo "上游规则更新完成"
+        echo "✅ 上游更新完成"
     
-    # 步骤4：上传临时文件作为工件（可选）
-    - name: Upload Artifacts
+    # 步骤4：上传工件（可选，用于调试）
+    - name: Upload Temporary Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: archive.tar.gz
@@ -67,131 +75,165 @@ jobs:
         retention-days: 1
     
     # 步骤5：构建规则文件
-    - name: Build Rule Files
+    - name: Build Final Rules
       run: |
-        echo "开始构建规则文件..."
+        echo "🔨 开始构建最终规则文件..."
         
         # 检查脚本目录
         if [ ! -d "./script" ]; then
-          echo "错误：script目录不存在"
+          echo "❌ 错误：script目录不存在"
           exit 3
         fi
         
-        # 执行构建脚本
+        # 构建内容规则
         echo "执行 update_content.sh..."
         if [ -f "./script/update_content.sh" ]; then
+          chmod +x ./script/update_content.sh
           bash ./script/update_content.sh
           if [ $? -ne 0 ]; then
-            echo "错误：update_content.sh 执行失败"
+            echo "❌ 错误：update_content.sh 执行失败"
             exit 3
           fi
+          echo "✅ update_content.sh 执行成功"
         else
-          echo "警告：update_content.sh 不存在，跳过"
+          echo "⚠️ 警告：update_content.sh 不存在，跳过"
         fi
         
+        # 构建DNS规则
         echo "执行 update_dns.sh..."
         if [ -f "./script/update_dns.sh" ]; then
+          chmod +x ./script/update_dns.sh
           bash ./script/update_dns.sh
           if [ $? -ne 0 ]; then
-            echo "错误：update_dns.sh 执行失败"
+            echo "❌ 错误：update_dns.sh 执行失败"
             exit 3
           fi
+          echo "✅ update_dns.sh 执行成功"
         else
-          echo "警告：update_dns.sh 不存在，跳过"
+          echo "⚠️ 警告：update_dns.sh 不存在，跳过"
         fi
         
         # 清理临时文件
+        echo "🗑️ 清理临时文件..."
         rm -f archive.tar.gz
-        echo "规则文件构建完成"
+        [ -d "./tmp" ] && rm -rf ./tmp/
+        
+        echo "✅ 规则构建完成"
     
-    # 步骤6：更新其他规则（可选）
-    - name: Update Additional Rules
+    # 步骤6：下载额外规则（可选）
+    - name: Download Additional Rules
       run: |
-        echo "更新额外规则..."
+        echo "🌐 下载额外规则..."
         
         # 创建规则目录
-        mkdir -p rules 2>/dev/null || true
+        mkdir -p rules 2>/dev/null || echo "创建rules目录"
         
-        # 下载额外规则文件（使用curl，更好的错误处理）
+        # 下载外部规则文件
         echo "下载 jiekouAD.txt..."
         curl -f -L -s -o rules/jiekouAD.txt \
-          https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt \
-          && echo "下载成功" || echo "警告：下载失败，跳过"
+          https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
         
-        # 检查下载的文件
-        if [ -f "rules/jiekouAD.txt" ]; then
+        if [ $? -eq 0 ]; then
+          echo "✅ 下载成功"
           if [ -s "rules/jiekouAD.txt" ]; then
-            echo "规则文件有效，行数: $(wc -l < rules/jiekouAD.txt)"
+            line_count=$(wc -l < rules/jiekouAD.txt)
+            echo "📊 规则行数: $line_count"
           else
-            echo "警告：规则文件为空"
+            echo "⚠️ 警告：下载的文件为空"
             rm -f rules/jiekouAD.txt
           fi
+        else
+          echo "⚠️ 警告：下载失败，跳过此规则"
+          rm -f rules/jiekouAD.txt 2>/dev/null || true
         fi
     
-    # 步骤7：提交并推送到当前GitHub仓库
-    - name: Commit and Push to GitHub
+    # 步骤7：推送到main分支
+    - name: Push to main Branch
       run: |
-        echo "准备提交更新..."
+        echo "📤 准备推送到main分支..."
         
-        # 配置Git用户
+        # 配置Git身份
+        echo "配置Git用户信息..."
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         
-        # 检查是否有文件变更
-        echo "检查文件变更状态..."
-        git status --porcelain
+        # 检查当前分支
+        current_branch=$(git branch --show-current)
+        echo "当前分支: $current_branch"
+        
+        # 显示文件变更状态
+        echo "📝 文件变更状态："
+        git status --short
         
         # 添加所有规则相关文件
-        echo "添加需要提交的文件..."
+        echo "📁 添加文件到暂存区..."
         
-        # 先添加已知文件类型
-        git add *.txt *.conf *.list *.json *.html *.srs *.mrs 2>/dev/null || true
+        # 添加所有规则文件（排除工作流文件）
+        git add --all -- '*.txt' '*.conf' '*.list' '*.json' '*.html' '*.srs' '*.mrs' 'rules/*' 'mod/*' 2>/dev/null || true
         
-        # 添加规则目录下的文件
-        if [ -d "rules" ]; then
-          git add rules/* 2>/dev/null || true
-        fi
+        # 检查是否有文件被添加
+        staged_files=$(git diff --cached --name-only)
         
-        # 添加mod目录下的文件
-        if [ -d "mod" ]; then
-          git add mod/* 2>/dev/null || true
-        fi
-        
-        # 检查是否有需要提交的变更
-        if git diff --cached --quiet; then
-          echo "没有需要提交的变更"
+        if [ -z "$staged_files" ]; then
+          echo "ℹ️ 没有检测到文件变更，无需提交"
           exit 0
         fi
         
-        # 提交变更
-        echo "提交变更..."
-        commit_message="🤖 Auto Update: $(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')"
+        echo "已暂存的文件："
+        echo "$staged_files"
+        
+        # 获取变更的行数
+        lines_changed=$(git diff --cached --stat | tail -1)
+        
+        # 提交变更到main分支
+        commit_time=$(TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S')
+        commit_message="🤖 自动更新规则 ($commit_time)"
+        
+        if [ -n "$lines_changed" ]; then
+          commit_message="$commit_message - $lines_changed"
+        fi
+        
+        echo "📝 提交信息：$commit_message"
         
         git commit -m "$commit_message"
         
-        # 推送到远程仓库
-        echo "推送到远程仓库..."
-        git push origin HEAD:${{ github.ref_name }}
+        # 强制推送到main分支
+        echo "🚀 推送到main分支..."
+        git push origin main --force
         
         if [ $? -eq 0 ]; then
-          echo "✅ 推送成功"
+          echo "🎉 ✅ 成功推送到main分支"
+          
+          # 显示推送后的状态
+          echo "📊 最新提交信息："
+          git log -1 --oneline
         else
-          echo "❌ 推送失败"
+          echo "❌ 推送到main分支失败"
+          echo "错误代码: $?"
           exit 128
         fi
     
-    # 步骤8：工作流执行摘要
-    - name: Workflow Summary
+    # 步骤8：执行摘要
+    - name: Execution Summary
       if: always()
       run: |
-        echo "========================================"
-        echo "         GitHub Actions 执行摘要        "
-        echo "========================================"
-        echo "工作流名称: Update Rules"
-        echo "执行时间: $(date)"
-        echo "仓库: ${{ github.repository }}"
-        echo "触发事件: ${{ github.event_name }}"
-        echo "Git引用: ${{ github.ref }}"
-        echo "提交SHA: ${{ github.sha }}"
-        echo "执行结果: ${{ job.status }}"
-        echo "========================================"
+        echo " "
+        echo "================================================"
+        echo "            GitHub Actions 执行摘要             "
+        echo "================================================"
+        echo "🏷️  工作流: ${{ github.workflow }}"
+        echo "📦 仓库: ${{ github.repository }}"
+        echo "🌿 目标分支: main"
+        echo "⏰ 执行时间: $(date '+%Y-%m-%d %H:%M:%S %Z')"
+        echo "⚡ 触发方式: ${{ github.event_name }}"
+        echo "🔧 运行环境: ${{ runner.os }}"
+        echo "📊 结束状态: ${{ job.status }}"
+        echo "================================================"
+        echo " "
+        
+        # 显示磁盘使用情况
+        echo "💾 磁盘使用情况："
+        df -h | grep -E 'Filesystem|/$'
+        
+        echo " "
+        echo "✨ 工作流执行完成 ✨"
