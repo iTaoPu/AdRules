@@ -1,75 +1,90 @@
 name: Update Rules
+
 on:
   schedule:
-  - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *' # 每6小时运行一次
   push:
     paths:
-    - 'script/*'
-    - 'mod/*'
-    - 'index.html'
-    - '.github/workflows/*'
-
-  workflow_dispatch:
-
+      - 'script/**'
+      - 'mod/**'
+      - 'index.html'
+      - '.github/workflows/**'
+  workflow_dispatch: # 支持手动触发
   repository_dispatch:
     types:
-    - Manual-Update
+      - manual-update # 建议使用小写，这是触发类型
 
 jobs:
   update-rules:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Checkout repository
+        uses: actions/checkout@v4 # 更新到最新v4版本
+        with:
+          fetch-depth: 0 # 获取完整历史记录，便于git操作
 
-    - name: Update Upstream
-      continue-on-error: false
-      run: |
-        pip install requests
-        bash ./script/update_upstream.sh
-        tar -czvf archive.tar.gz ./tmp/*
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # 指定一个具体的最新稳定版
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: archive.tar.gz
-        path: archive.tar.gz
+      - name: Update Upstream Rules
+        run: |
+          python -m pip install --upgrade pip requests
+          bash ./script/update_upstream.sh
+          # 创建临时存档
+          tar -czvf archive.tar.gz -C ./tmp .
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: 1 # 禁用pip版本检查以加快速度
 
-    - name: Build Rules
-      continue-on-error: false
-      run: |
-        bash ./script/update_content.sh
-        bash ./script/update_dns.sh
-        rm -f archive.tar.gz
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: archive.tar.gz
+          path: archive.tar.gz
+          retention-days: 1 # 临时文件只保留1天
 
-    - name: Update other rules
-      run: |
-        mkdir -p rules
-        cd rules
-        rm -f *.txt
-        wget https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
-        cd ../
+      - name: Build Rules
+        run: |
+          bash ./script/update_content.sh
+          bash ./script/update_dns.sh
+          # 清理临时文件
+          rm -rf archive.tar.gz tmp/ 2>/dev/null || true
 
-    - name: Git push assets to Github
-      run: |
-        git init
-        git config --local user.name "actions"
-        git config --local user.email "action@github.com"
-        git checkout --orphan main
-        git rm -rf .github
-        git rm -rf script
-        git rm -rf *.md
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git push -f -u origin main
+      - name: Update Other Rules
+        run: |
+          mkdir -p ./rules
+          cd ./rules
+          # 使用 -O 参数明确指定输出文件
+          wget -q -O jiekouAD.txt https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
+          # 可选：如果需要，可以获取更多规则源
+          # wget -q -O anotherRule.txt https://example.com/rule.txt
 
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        repository: ${{ github.repository }}
-        retain_days: 2
-        keep_minimum_runs: 5
+      - name: Deploy to GitHub
+        run: |
+          git init
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan main
+          
+          # 删除不需要的文件和目录
+          rm -rf .github script *.md .gitignore 2>/dev/null || true
+          
+          # 添加需要保留的规则文件
+          git add *.txt *.list *.conf *.html *.json *.srs *.mrs
+          git add rules/* mod/*
+          
+          # 提交更改
+          git commit -m "chore: update rules $(date -u '+%Y-%m-%d %H:%M') (UTC)" -m "[skip ci]"
+          
+          # 强制推送到main分支
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push -f -u origin main
+
+      - name: Clean Up Old Workflow Runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 2
+          keep_minimum_runs: 5
