@@ -74,8 +74,44 @@ jobs:
                 "${GITHUB_WORKSPACE}"/*.mrs "${GITHUB_WORKSPACE}"/rules/* \
                 "${GITHUB_WORKSPACE}"/mod/* . 2>/dev/null || true
 
+          # ===== 新增：保留 CNAME 文件 =====
+          # 如果工作区有 CNAME 文件，复制到临时仓库
+          if [ -f "${GITHUB_WORKSPACE}/CNAME" ]; then
+            echo "检测到 CNAME 文件，保留它..."
+            cp "${GITHUB_WORKSPACE}/CNAME" .
+          fi
+          
+          # ===== 新增：保留其他自定义文件 =====
+          # 保留常见的自定义配置文件
+          CUSTOM_FILES=("_config.yml" "_config.yaml" ".nojekyll" "favicon.ico" "robots.txt")
+          for file in "${CUSTOM_FILES[@]}"; do
+            if [ -f "${GITHUB_WORKSPACE}/${file}" ]; then
+              echo "保留自定义文件: ${file}"
+              cp "${GITHUB_WORKSPACE}/${file}" .
+            fi
+          done
+          
+          # 保留 .github 目录中的特定配置文件（如果需要）
+          if [ -f "${GITHUB_WORKSPACE}/.github/FUNDING.yml" ]; then
+            mkdir -p .github
+            cp "${GITHUB_WORKSPACE}/.github/FUNDING.yml" .github/
+          fi
+          
+          # 保留 README.md（如果存在）
+          if [ -f "${GITHUB_WORKSPACE}/README.md" ]; then
+            echo "保留 README.md 文件..."
+            cp "${GITHUB_WORKSPACE}/README.md" .
+          fi
+          
+          # 保留 LICENSE 文件（如果存在）
+          if [ -f "${GITHUB_WORKSPACE}/LICENSE" ]; then
+            echo "保留 LICENSE 文件..."
+            cp "${GITHUB_WORKSPACE}/LICENSE" .
+          fi
+
           # 4. 删除不需要的文件（确保目录干净）
-          rm -rf .github script *.md .gitignore archive.tar.gz tmp 2>/dev/null || true
+          # 注意：不再删除 README.md 和 LICENSE
+          rm -rf .github script .gitignore archive.tar.gz tmp 2>/dev/null || true
 
           # 5. 添加所有文件并提交
           git add .
