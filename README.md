@@ -31,5 +31,3 @@ The WTFPL License is a permissive license that allows you to do whatever you wan
 
 **📝 https://github.com/Cats-Team/AdRules/issues**  
 **💬 https://github.com/Cats-Team/AdRules/discussions**
-
-[<code><kbd>Back to top</kbd></code>](#)
