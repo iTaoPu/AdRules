@@ -12,74 +12,83 @@ on:
   workflow_dispatch: # 支持手动触发
   repository_dispatch:
     types:
-      - manual-update # 建议使用小写，这是触发类型
+      - manual-update
 
 jobs:
   update-rules:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # 更新到最新v4版本
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 获取完整历史记录，便于git操作
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' # 指定一个具体的最新稳定版
+          python-version: '3.12'
 
       - name: Update Upstream Rules
         run: |
           python -m pip install --upgrade pip requests
           bash ./script/update_upstream.sh
-          # 创建临时存档
           tar -czvf archive.tar.gz -C ./tmp .
         env:
-          PIP_DISABLE_PIP_VERSION_CHECK: 1 # 禁用pip版本检查以加快速度
+          PIP_DISABLE_PIP_VERSION_CHECK: 1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: archive.tar.gz
           path: archive.tar.gz
-          retention-days: 1 # 临时文件只保留1天
+          retention-days: 1
 
       - name: Build Rules
         run: |
           bash ./script/update_content.sh
           bash ./script/update_dns.sh
-          # 清理临时文件
           rm -rf archive.tar.gz tmp/ 2>/dev/null || true
 
       - name: Update Other Rules
         run: |
           mkdir -p ./rules
           cd ./rules
-          # 使用 -O 参数明确指定输出文件
           wget -q -O jiekouAD.txt https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
-          # 可选：如果需要，可以获取更多规则源
-          # wget -q -O anotherRule.txt https://example.com/rule.txt
 
       - name: Deploy to GitHub
         run: |
+          # 1. 设置Git用户
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 2. 在临时目录初始化一个全新的仓库
+          TEMP_DIR="$(mktemp -d)"
+          cd "${TEMP_DIR}"
           git init
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git checkout --orphan main
-          
-          # 删除不需要的文件和目录
-          rm -rf .github script *.md .gitignore 2>/dev/null || true
-          
-          # 添加需要保留的规则文件
-          git add *.txt *.list *.conf *.html *.json *.srs *.mrs
-          git add rules/* mod/*
-          
-          # 提交更改
+
+          # 3. 从工作目录复制所有需要的规则文件到临时仓库
+          cp -r "${GITHUB_WORKSPACE}"/*.txt "${GITHUB_WORKSPACE}"/*.list \
+                "${GITHUB_WORKSPACE}"/*.conf "${GITHUB_WORKSPACE}"/*.html \
+                "${GITHUB_WORKSPACE}"/*.json "${GITHUB_WORKSPACE}"/*.srs \
+                "${GITHUB_WORKSPACE}"/*.mrs "${GITHUB_WORKSPACE}"/rules/* \
+                "${GITHUB_WORKSPACE}"/mod/* . 2>/dev/null || true
+
+          # 4. 删除不需要的文件（确保目录干净）
+          rm -rf .github script *.md .gitignore archive.tar.gz tmp 2>/dev/null || true
+
+          # 5. 添加所有文件并提交
+          git add .
           git commit -m "chore: update rules $(date -u '+%Y-%m-%d %H:%M') (UTC)" -m "[skip ci]"
-          
-          # 强制推送到main分支
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push -f -u origin main
+
+          # 6. 强制推送到原始仓库的main分支
+          # 这里直接使用现有远程，但强制推送
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin main
+
+          # 7. 清理临时目录
+          cd "${GITHUB_WORKSPACE}"
+          rm -rf "${TEMP_DIR}"
 
       - name: Clean Up Old Workflow Runs
         uses: Mattraks/delete-workflow-runs@main
