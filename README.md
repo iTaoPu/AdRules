@@ -27,7 +27,3 @@ This project is licensed under the WTFPL License - see the LICENSE file for deta
 
 The WTFPL License is a permissive license that allows you to do whatever you want with the code, without any restrictions or obligations. It is a short and simple license that promotes freedom and flexibility.
 
-## Chat
-
-**📝 https://github.com/Cats-Team/AdRules/issues**  
-**💬 https://github.com/Cats-Team/AdRules/discussions**
