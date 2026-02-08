@@ -66,19 +66,6 @@ jobs:
         git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
         git push -f -u origin main
 
-    - name: Auto Built (Conditional)
-      continue-on-error: true
-      run: |
-        # 检查 CF_TOKEN 是否设置且非空
-        if [ -n "${{ secrets.CF_TOKEN }}" ] && [[ "${{ secrets.CF_TOKEN }}" =~ ^https?:// ]]; then
-          echo "Triggering auto build notification..."
-          curl -X POST "${{ secrets.CF_TOKEN }}"
-          echo "Auto built notification sent successfully"
-        else
-          echo "CF_TOKEN is not set or invalid, skipping auto build notification"
-          echo "To use this feature, set CF_TOKEN in GitHub Secrets with a valid URL"
-        fi
-
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
