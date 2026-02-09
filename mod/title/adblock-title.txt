@@ -2,6 +2,6 @@
 ! Title: AdRules 橘猫のとおり道 AdBlock List
 ! Homepage: https://i叚娤.倖鍢.net.cn
 ! Powerd by i叚娤.倖鍢
-! Expires: 24 小时之前 (update frequency)
+! Expires: 6 hours (update frequency)
 ! Description: Merge from EasyList,EasyListChina etc. and Add Some Rules.
 ! ------------------------------------
