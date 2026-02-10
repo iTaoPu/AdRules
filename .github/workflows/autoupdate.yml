@@ -2,7 +2,7 @@ name: Update Rules
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # 每6小时运行一次
+    - cron: '0 */12 * * *' # 每6小时运行一次
   push:
     paths:
       - 'script/**'
