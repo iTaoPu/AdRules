@@ -6,3 +6,4 @@
 ! Description: Based on the AdRules AdBlock List, with additional filters.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
+! Upstream Sources: https://adrules.sspai.dedyn.io/ulist.html
