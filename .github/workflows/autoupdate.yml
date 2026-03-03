@@ -67,11 +67,6 @@ jobs:
         git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
         git push -f -u origin main
 
-    - name: Auto Built
-      continue-on-error: true
-      run: |
-        curl -X POST "${{ secrets.CF_TOKEN }}"
-
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
