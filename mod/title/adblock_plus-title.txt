@@ -1,7 +1,8 @@
 [Adblock Plus 2.0]
 ! Title: AdRules 橘猫のとおり道 AdBlock List Plus
 ! Homepage: https://i叚娤.倖鍢.net.cn
-! Powerd by i叚娤.倖鍢
+! Powerd by i叚娤.倖鍢 & Upstream Authors
 ! Expires: 8 hours (update frequency)
-! Description: AdRules AdBlock List's Plus Verison, And Add Some Filters
+! Description: Based on the AdRules AdBlock List, with additional filters.
+! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
