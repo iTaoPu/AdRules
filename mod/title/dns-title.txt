@@ -1,0 +1,11 @@
+[Adblock Plus 2.0]
+! Title: AdRules 橘猫のとおり道 DNS List
+! Homepage: https://i叚娤.倖鍢.net.cn
+! Powerd by 長髯主簿 & Upstream Authors
+! Signature: 吾性疏冷, 唯食动心
+! Expires: 8 hours (update frequency)
+! Description: List for blocking ads in the Chinese region. Block Ads, Trackers, Malware, HTTPDNS, PCDN. 
+! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
+! ------------------------------------
+! Upstream Sources: https://adrules.sspai.dedyn.io/ulist.html
+
