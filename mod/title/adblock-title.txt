@@ -1,7 +1,7 @@
 [Adblock Plus 2.0]
 ! Title: AdRules 橘猫のとおり道 AdBlock List
 ! Homepage: https://i叚娤.倖鍢.net.cn
-! Powerd by 長髯主簿 & Upstream Authors
+! Powerd by 言氏稗客 & Upstream Authors
 ! Signature: 吾性疏冷, 唯食动心
 ! Expires: 8 hours (update frequency)
 ! Description: Standard version. Merged from EasyList, EasyList China, etc., with additional custom rules.
