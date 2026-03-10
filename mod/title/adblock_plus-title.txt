@@ -4,7 +4,7 @@
 ! Powerd by 言氏稗客 & Upstream Authors
 ! Signature: 吾性疏冷, 唯食动心
 ! Expires: 8 hours (update frequency)
-! Description: Based on the AdRules AdBlock List, with additional filters.
+! Description: Based on the Standard Edition List, with additional filters.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
 ! Upstream Sources: https://adrules.sspai.dedyn.io/ulist.html
