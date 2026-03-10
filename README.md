@@ -15,7 +15,7 @@ List for blocking ads in the Chinese region
 Block Ads, Trackers, Malware, HTTPDNS, PCDN.
 
 ❔Have any questions? Please go to [Chat](#chat)  
-📃Want to see the upstream rules? [Source](https://adrules.sspai.dedyn.io)
+📃Want to see the upstream rules? [Source](https://adrules.sspai.dedyn.io/ulist.html)
 <br>  
 
 > [!CAUTION]
