@@ -1,74 +1,78 @@
 name: Update Rules
 on:
   schedule:
-  - cron: '0 */8 * * *'
+    - cron: '0 */8 * * *'
   push:
     paths:
-    - 'script/*'
-    - 'mod/*'
-    - 'index.html'
-    - '.github/workflows/*'
-
+      - 'script/*'
+      - 'mod/*'
+      - 'index.html'
+      - '.github/workflows/*'
   workflow_dispatch:
-
   repository_dispatch:
     types:
-    - Manual-Update
+      - Manual-Update
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   update-rules:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-
+    
+    - name: Install dependencies
+      run: pip install requests
+    
     - name: Update Upstream
-      continue-on-error: false
       run: |
-        pip install requests
         bash ./script/update_upstream.sh
         tar -czvf archive.tar.gz ./tmp/*
-
+    
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: archive.tar.gz
         path: archive.tar.gz
-
+    
     - name: Build Rules
-      continue-on-error: false
       run: |
         bash ./script/update_content.sh
         bash ./script/update_dns.sh
-        rm -f archive.tar.gz
-
+    
     - name: Update other rules
       run: |
         mkdir -p rules
         cd rules
-        rm -f *.txt
-        wget https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
-        cd ../
-
-    - name: Git push assets to Github
+        wget -q https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
+        # Validate download
+        if [ ! -s jiekouAD.txt ]; then
+          echo "Downloaded file is empty"
+          exit 1
+        fi
+    
+    - name: Commit and push changes
       run: |
-        git init
-        git config --local user.name "actions"
-        git config --local user.email "action@github.com"
-        git checkout --orphan main
-        git rm -rf .github
-        git rm -rf script
-        git rm -rf *.md
-        git rm -rf LICENSE
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git push -f -u origin main
-
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add -A
+        git commit -m "Update at $(date +'%Y-%m-%d %H:%M %Z')" || echo "No changes to commit"
+        git push
+    
+    - name: Cleanup workflow runs
+      if: success()
+      uses: actions/delete-workflow-runs@v2  # Consider GitHub's official action
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
