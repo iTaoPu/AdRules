@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@main
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v6
       with:
         python-version: '3.x'
 
@@ -33,7 +33,7 @@ jobs:
         tar -czvf archive.tar.gz ./tmp/*
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: archive.tar.gz
         path: archive.tar.gz
@@ -82,7 +82,7 @@ jobs:
         git branch -m main
         git push --force --set-upstream origin main
 
-    - name: Auto Built
+    - name: Auto Build
       continue-on-error: true
       run: |
         curl -X POST "${{ secrets.CF_TOKEN }}"
