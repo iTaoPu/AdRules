@@ -99,9 +99,9 @@ process_with_singbox() {
 process_with_mihomo() {
     local bin="$TOOLS_DIR/mihomo"
     # 获取版本号
-    curl -sL -o "$TOOLS_DIR/version.txt" https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt
-    local version=$(cat "$TOOLS_DIR/version.txt")
-    local url="https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/mihomo-linux-amd64-${version}.gz"
+    local version="v1.19.20"
+    local mihomo_file="mihomo-linux-amd64-${version}"
+    local url="https://github.com/MetaCubeX/mihomo/releases/download/${version}/${mihomo_file}.gz"
     
     # 直接下载并流式解压，绕过文件名不匹配问题
     log_info "下载并配置 mihomo ($url)..."
