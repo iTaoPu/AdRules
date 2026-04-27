@@ -57,7 +57,7 @@ content_urls=(
   #Noyllopa NoAppDownload
   "https://raw.githubusercontent.com/Noyllopa/NoAppDownload/master/NoAppDownload.txt" 
   #china
-  #"https://filters.adtidy.org/extension/ublock/filters/224.txt" 
+  "https://filters.adtidy.org/extension/ublock/filters/224.txt" 
   #cjx
   "https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt"
   #anti-anti-ad
