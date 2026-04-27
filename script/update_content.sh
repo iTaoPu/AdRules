@@ -88,7 +88,7 @@ process_version "lite" "adblock_lite.txt" "${lite_files[@]}"
 # 2. Normal 版本 (基于 Lite)
 normal_files=(
     "${ROOT_DIR}/adblock_lite.txt"
-    ${CONTENT_DIR}/*_3.txt
+    ${CONTENT_DIR}/*_2_optimized.txt
     ${CONTENT_DIR}/*_clear_urls_uboified.txt
     ${CONTENT_DIR}/*_easyprivacy.txt
 )
