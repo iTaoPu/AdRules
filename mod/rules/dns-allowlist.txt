@@ -245,6 +245,9 @@ tdid.m.qq.com
 #! 未分类大厂 白名单 End !#
 
 #! 乱七八糟的域名 白名单 Start !#
+#同花顺预测
+adm.10jqka.com.cn
+
 #Volkswagen #246
 d2cmedia.ca
 
