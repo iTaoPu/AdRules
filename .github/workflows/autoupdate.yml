@@ -1,25 +1,28 @@
 name: Update Rules
 on:
   schedule:
-  - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *'
   push:
     paths:
-    - 'script/*'
-    - 'mod/*'
-    - 'index.html'
-    - '.github/workflows/*'
+      - 'script/*'
+      - 'mod/*'
+      - 'index.html'
+      - '.github/workflows/*'
 
   workflow_dispatch:
 
   repository_dispatch:
     types:
-    - Manual-Update
+      - Manual-Update
 
 jobs:
   update-rules:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
+      with:
+        fetch-depth: 0 # 获取完整历史以确保推送顺利
+
     - name: Setup Python
       uses: actions/setup-python@v6
       with:
@@ -29,11 +32,12 @@ jobs:
       continue-on-error: false
       run: |
         pip install requests
+        mkdir -p ./tmp # 确保目录存在，防止 tar 找不到文件报错
         bash ./script/update_upstream.sh
         tar -czvf archive.tar.gz ./tmp/*
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7 # 升级至 v7 适配 Node.js 24
       with:
         name: archive.tar.gz
         path: archive.tar.gz
@@ -50,37 +54,18 @@ jobs:
         mkdir -p rules
         cd rules
         rm -f *.txt
-        wget https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt
+        wget https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt || echo "Download failed"
         cd ../
 
     - name: Git push assets to Github
       run: |
-        git init
         git config --local user.name "actions"
         git config --local user.email "action@github.com"
-        git checkout --orphan main
-        git rm -rf .github
-        git rm -rf script
-        git rm -rf *.md
-        git rm -rf LICENSE
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/*
-        git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git push -f -u origin main
-
-    - name: Git push assets to other repos
-      continue-on-error: true
-      run: |
-        rm -rf .git/
-        git init
-        git config --local user.name "hacamer"
-        git config --local user.email "${{ secrets.USEREMAIL }}"
-        git remote add origin "https://iTaoPu:${{ secrets.GITLAB_TOKEN }}@gitlab.com/cats-team/adrules.git"
-        git remote set-url --add origin "https://hacamer:${{ secrets.BITBUCKET_TOKEN }}@bitbucket.org/hacamer/adrules.git"
-        git checkout --orphan clearhistory
-        git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
-        git commit -am "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-        git branch -m main
-        git push --force --set-upstream origin main
+        # 仅添加生成的资源文件
+        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || echo "No files to add"
+        # 如果没有文件变更，commit 会返回 1。使用 || exit 0 确保工作流继续
+        git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")" || exit 0
+        git push origin main
 
     - name: Auto Build
       continue-on-error: true
