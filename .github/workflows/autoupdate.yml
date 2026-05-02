@@ -74,7 +74,7 @@ jobs:
         git init
         git config --local user.name "hacamer"
         git config --local user.email "${{ secrets.USEREMAIL }}"
-        git remote add origin "https://cats-team:${{ secrets.GITLAB_TOKEN }}@gitlab.com/cats-team/adrules.git"
+        git remote add origin "https://iTaoPu:${{ secrets.GITLAB_TOKEN }}@gitlab.com/cats-team/adrules.git"
         git remote set-url --add origin "https://hacamer:${{ secrets.BITBUCKET_TOKEN }}@bitbucket.org/hacamer/adrules.git"
         git checkout --orphan clearhistory
         git add *.{conf,html,txt,json,srs,mrs,list} rules/* mod/*
