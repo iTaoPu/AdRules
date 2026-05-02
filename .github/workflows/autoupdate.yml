@@ -8,9 +8,7 @@ on:
       - 'mod/*'
       - 'index.html'
       - '.github/workflows/*'
-
   workflow_dispatch:
-
   repository_dispatch:
     types:
       - Manual-Update
@@ -18,10 +16,14 @@ on:
 jobs:
   update-rules:
     runs-on: ubuntu-latest
+    permissions: # 显式声明权限，防止 GITHUB_TOKEN 权限不足
+      contents: write
+      actions: write
+
     steps:
     - uses: actions/checkout@main
       with:
-        fetch-depth: 0 # 必须获取历史记录才能正常 commit
+        fetch-depth: 0
 
     - name: Setup Python
       uses: actions/setup-python@v6
@@ -32,13 +34,13 @@ jobs:
       continue-on-error: false
       run: |
         pip install requests
-        mkdir -p ./tmp # 确保目录存在，防止 tar 报错
+        mkdir -p ./tmp
         bash ./script/update_upstream.sh
-        # 如果 tmp 文件夹可能为空，增加判断防止 tar 报错
-        if [ "$(ls -A ./tmp)" ]; then tar -czvf archive.tar.gz ./tmp/*; else touch archive.tar.gz; fi
+        # 优化打包逻辑，防止空文件夹报错
+        tar -czvf archive.tar.gz -C ./tmp . || touch archive.tar.gz
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v7 # 升级到 v7 解决 Node 24 警告
+      uses: actions/upload-artifact@v7
       with:
         name: archive.tar.gz
         path: archive.tar.gz
@@ -60,24 +62,36 @@ jobs:
 
     - name: Git push assets to Github
       run: |
+        # 1. 备份工作流和脚本，防止被 git rm 误删
+        mkdir -p backup_scripts
+        cp -r .github script backup_scripts/ || true
+
+        # 2. 模拟你原本的 orphan 逻辑
         git config --local user.name "actions"
         git config --local user.email "action@github.com"
+        git checkout --orphan temp_branch
         
-        # 稳健的提交逻辑：仅添加生成的文件，不使用 git init 重新初始化
-        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || echo "No files to add"
+        # 3. 还原必要文件
+        cp -r backup_scripts/.github .
+        cp -r backup_scripts/script .
+        rm -rf backup_scripts
+
+        # 4. 添加目标文件
+        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || echo "No assets"
         
-        # 关键修复：检查是否有变更，没有变更则跳过 commit，防止 exit code 1
+        # 5. 检查是否有文件可以提交
         if git diff --staged --quiet; then
-          echo "No changes to commit"
+          echo "Nothing changed"
         else
           git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
-          git push origin main
+          # 强制覆盖 main 分支
+          git branch -M main
+          git push -f origin main
         fi
 
     - name: Auto Build
       continue-on-error: true
       run: |
-        # 检查 CF_TOKEN 是否存在后再执行，防止空变量报错
         if [ -n "${{ secrets.CF_TOKEN }}" ]; then
           curl -X POST "${{ secrets.CF_TOKEN }}"
         fi
