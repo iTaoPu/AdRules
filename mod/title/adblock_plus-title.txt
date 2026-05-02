@@ -1,8 +1,10 @@
 [Adblock Plus 2.0]
-! Title: AdRules AdBlock List Plus
-! Homepage: https://github.com/Cats-Team/AdRules
-! Powered by Cats-Team & Upstream Authors
-! Expires: 1 day (update frequency)
-! Description: Based on the AdRules AdBlock List, with additional filters.
+! Title: AdRules 橘猫のとおり道 AdBlock List Plus
+! Homepage: https://i叚娤.倖鍢.net.cn
+! Powerd by 言氏稗客 & Upstream Authors
+! Signature: 吾性疏冷, 唯食动心
+! Expires: 8 hours (update frequency)
+! Description: Based on the Standard Edition List, with additional filters.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
-! Upstream Sources: https://github.com/Cats-Team/AdRules/blob/script/Source.md
+! ------------------------------------
+! Upstream Sources: https://adrules.sspai.dedyn.io/ulist.html
