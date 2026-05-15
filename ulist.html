@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告过滤规则列表 · 整合表</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            margin: 0;
+            padding: 2rem 1rem;
+            color: #0b1c2f;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -12px rgba(0,20,40,0.25);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .header {
+            padding: 1.5rem 2rem 0.5rem 2rem;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .warning {
+            background: #fffbeb;
+            border-left: 6px solid #f59e0b;
+            padding: 1rem 2rem;
+            margin: 1.5rem 2rem 0.5rem 2rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: #92400e;
+            box-shadow: 0 2px 8px rgba(245,158,11,0.08);
+        }
+        .warning::before {
+            content: "⚠️";
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 0.25rem 0;
+            background: linear-gradient(145deg, #0b1c2f, #1e3a5f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #4a5a72;
+            margin: 0.2rem 0 0 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .subtitle a {
+            color: #1e4c7a;
+            text-decoration: none;
+            border-bottom: 1px dashed #9bb7d4;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 0 2rem 2rem 2rem;
+            border-radius: 18px;
+            border: 1px solid #dee7ef;
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 900px;
+            table-layout: auto;
+            white-space: normal;
+        }
+        th {
+            background: #f1f6fd;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #264d7c;
+            border-bottom: 2px solid #cbd5e1;
+            padding: 1rem 1rem;
+            text-align: left;
+        }
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #e6edf4;
+            vertical-align: top;
+            background-color: white;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .group-header {
+            background: #e9f0fa !important;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+            color: #0f3a68;
+            border-bottom: 2px solid #a7c0da;
+            border-top: 2px solid #a7c0da;
+        }
+        .group-header td,
+        .group-header th {
+            background: #e9f0fa;
+            padding: 0.7rem 1rem;
+        }
+        .group-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 650;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .group-header h3::before {
+            content: "▍";
+            font-size: 1.4rem;
+            opacity: 0.7;
+        }
+        td:first-child, th:first-child {
+            padding-left: 1.5rem;
+        }
+        td:last-child, th:last-child {
+            padding-right: 1.5rem;
+        }
+        .source-link {
+            word-break: break-all;
+            text-decoration: none;
+            color: #0969da;
+            font-weight: 500;
+            border-bottom: 1px dotted #aac8e4;
+        }
+        .source-link:hover {
+            color: #1b4f8b;
+            border-bottom: 1px solid;
+        }
+        .badge-type {
+            display: inline-block;
+            background: #ddf4ff;
+            color: #0550ae;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            letter-spacing: 0.01em;
+            border: 1px solid #b6d8f7;
+        }
+        .license {
+            font-size: 0.85rem;
+            color: #264d6e;
+            background: #f4f9ff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 24px;
+            display: inline-block;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .comment-placeholder {
+            color: #9b9b9b;
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+        tr:hover td {
+            background-color: #f9fcff;
+            transition: 0.1s;
+        }
+        .footer-note {
+            padding: 1.2rem 2rem 2rem 2rem;
+            font-size: 0.8rem;
+            color: #4f688b;
+            border-top: 1px solid #dce5ed;
+            background: #fafdff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .footer-note a {
+            color: #1e5c9b;
+            text-decoration: none;
+        }
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+        .stats span {
+            background: #e4ebf5;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.5rem; }
+            .header, .warning, .footer-note { padding-left: 1rem; padding-right: 1rem; }
+            .table-wrapper { margin: 0 1rem 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>广告过滤规则列表 · 整合表</h1>
+        <div class="subtitle">
+            <span>从 GitHub Markdown 转换 · 包含 Lite / Normal / Plus / DNS 分类</span>
+        </div>
+    </div>
+
+    <div class="warning">
+        <strong>部分信息可能已过时</strong> — 规则链接、许可证或维护状态请以各仓库为准。
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>📌 列表源 (List Source)</th>
+                    <th>🔖 类型</th>
+                    <th>👤 作者</th>
+                    <th>⚖️ 许可证</th>
+                    <th>       </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ========= 分组：Lite ========= -->
+                <tr class="group-header"><th colspan="5"><h3>⚡ Lite 基础过滤</h3></th></tr>
+
+                <!-- xinggsf -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/mv.txt" target="_blank" rel="noopener">https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/mv.txt</a></td><td><span class="badge-type">ABP</span></td><td>xinggsf</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- damengzhu -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt" target="_blank">https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</a></td><td><span class="badge-type">ABP</span></td><td>damengzhu</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- Noyllopa -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/Noyllopa/NoAppDownload/master/NoAppDownload.txt" target="_blank">https://raw.githubusercontent.com/Noyllopa/NoAppDownload/master/NoAppDownload.txt</a></td><td><span class="badge-type">ABP</span></td><td>Noyllopa</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- AdGuard 224 (ublock) -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/extension/ublock/filters/224.txt" target="_blank">https://filters.adtidy.org/extension/ublock/filters/224.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- cjx82630 -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt" target="_blank">https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt</a></td><td><span class="badge-type">ABP</span></td><td>cjx82630</td><td><span class="license">LGPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- reek anti-adblock -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt" target="_blank">https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt</a></td><td><span class="badge-type">ABP</span></td><td>reek</td><td><span class="license">CC BY-SA 4.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- easylist antiadblock -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" target="_blank">https://easylist-downloads.adblockplus.org/antiadblockfilters.txt</a></td><td><span class="badge-type">ABP</span></td><td>EasyList</td><td><span class="license">EasyList Licence</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- abp-filters-anti-cv -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt" target="_blank">https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt</a></td><td><span class="badge-type">ABP</span></td><td>Adblock Plus Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+
+                <!-- ========= 分组：Normal ========= -->
+                <tr class="group-header"><th colspan="5"><h3>🌀 Normal (基于 Lite 扩展)</h3></th></tr>
+
+                <!-- DandelionSprout -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/DandelionSprout/adfilt/master/ClearURLs%20for%20uBo/clear_urls_uboified.txt" target="_blank">https://raw.githubusercontent.com/DandelionSprout/adfilt/master/ClearURLs%20for%20uBo/clear_urls_uboified.txt</a></td><td><span class="badge-type">ABP</span></td><td>DandelionSprout</td><td><span class="license">DandelionSprout's Licence</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- AdGuard 3_optimized -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/extension/ublock/filters/3_optimized.txt" target="_blank">https://filters.adtidy.org/extension/ublock/filters/3_optimized.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- EasyPrivacy -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/easyprivacy.txt" target="_blank">https://easylist-downloads.adblockplus.org/easyprivacy.txt</a></td><td><span class="badge-type">ABP</span></td><td>EasyList</td><td><span class="license">EasyList Repository Licences</span></td><td><span class="comment-placeholder">—</span></td></tr>
+
+                <!-- ========= 分组：Plus ========= -->
+                <tr class="group-header"><th colspan="5"><h3>⚙️ Plus (基于 Normal 增强)</h3></th></tr>
+
+                <!-- uBlock Origin annoyances -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt" target="_blank">https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt</a></td><td><span class="badge-type">ABP</span></td><td>uBlock Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- uBlock Origin privacy -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt" target="_blank">https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt</a></td><td><span class="badge-type">ABP</span></td><td>uBlock Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+
+                <!-- AdGuard windows filters 2,11,3,224,14,4,17 (每个单独一行) -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/2.txt" target="_blank">https://filters.adtidy.org/windows/filters/2.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/11.txt" target="_blank">https://filters.adtidy.org/windows/filters/11.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/3.txt" target="_blank">https://filters.adtidy.org/windows/filters/3.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/224.txt" target="_blank">https://filters.adtidy.org/windows/filters/224.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/14.txt" target="_blank">https://filters.adtidy.org/windows/filters/14.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/4.txt" target="_blank">https://filters.adtidy.org/windows/filters/4.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/17.txt" target="_blank">https://filters.adtidy.org/windows/filters/17.txt</a></td><td><span class="badge-type">ABP</span></td><td>AdGuard Team</td><td><span class="license">GPL-3.0 license</span></td><td><span class="comment-placeholder">—</span></td></tr>
+
+                <!-- ========= 分组：DNS ========= -->
+                <tr class="group-header"><th colspan="5"><h3>🌐 DNS (基于内容过滤 / Hosts)</h3></th></tr>
+
+                <!-- adavoid ultimate ad filter -->
+                <tr><td><a class="source-link" href="https://filters.adavoid.org/ultimate-ad-filter.txt" target="_blank">https://filters.adavoid.org/ultimate-ad-filter.txt</a></td><td><span class="badge-type">ABP</span></td><td>ultimate Team</td><td><span class="license">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- adavoid ultimate privacy filter -->
+                <tr><td><a class="source-link" href="https://filters.adavoid.org/ultimate-privacy-filter.txt" target="_blank">https://filters.adavoid.org/ultimate-privacy-filter.txt</a></td><td><span class="badge-type">ABP</span></td><td>ultimate Team</td><td><span class="license">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- fanboy annoyance -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt</a></td><td><span class="badge-type">ABP</span></td><td>Fanboy Team</td><td><span class="license">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- banbendalao ADgk -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/banbendalao/ADgk/master/ADgk.txt" target="_blank">https://raw.githubusercontent.com/banbendalao/ADgk/master/ADgk.txt</a></td><td><span class="badge-type">ABP</span></td><td>Banbendalao</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- hoshsadiq nocoin -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt" target="_blank">https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt</a></td><td><span class="badge-type">ABP</span></td><td>hoshsadiq</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- durablenapkin scamblocklist -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt" target="_blank">https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt</a></td><td><span class="badge-type">ABP</span></td><td>durablenapkin</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- d3ward -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/d3ward/toolz/master/src/d3host.adblock" target="_blank">https://raw.githubusercontent.com/d3ward/toolz/master/src/d3host.adblock</a></td><td><span class="badge-type">ABP</span></td><td>d3ward</td><td><span class="license">CC BY-NC-SA</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- Adaway hosts -->
+                <tr><td><a class="source-link" href="https://adaway.org/hosts.txt" target="_blank">https://adaway.org/hosts.txt</a></td><td><span class="badge-type">Hosts</span></td><td>Adaway Team</td><td><span class="license">CC Attribution 3.0</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- jdlingyu ad-wars -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts" target="_blank">https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts</a></td><td><span class="badge-type">Hosts</span></td><td>jdlingyu</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- crazy-max windows spy -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt" target="_blank">https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt</a></td><td><span class="badge-type">Hosts</span></td><td>crazy-max</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- quidsup notrack malware -->
+                <tr><td><a class="source-link" href="https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts" target="_blank">https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts</a></td><td><span class="badge-type">Hosts</span></td><td>QuidsUp</td><td><span class="license">GNU General Public License v3.0</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- bigdargon hostsVN -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts" target="_blank">https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts</a></td><td><span class="badge-type">Hosts</span></td><td>bigdargon</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- StevenBlack hosts -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts" target="_blank">https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts</a></td><td><span class="badge-type">Hosts</span></td><td>StevenBlack</td><td><span class="license">MIT License</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- urlhaus abuse -->
+                <tr><td><a class="source-link" href="https://urlhaus.abuse.ch/downloads/hostfile/" target="_blank">https://urlhaus.abuse.ch/downloads/hostfile/</a></td><td><span class="badge-type">Hosts</span></td><td>urlhaus Team</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- someonewhocares -->
+                <tr><td><a class="source-link" href="https://someonewhocares.org/hosts/zero/hosts" target="_blank">https://someonewhocares.org/hosts/zero/hosts</a></td><td><span class="badge-type">Hosts</span></td><td>someonewhocares</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+                <!-- Spam404 main blacklist -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt" target="_blank">https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt</a></td><td><span class="badge-type">Hosts</span></td><td>Spam404</td><td><span class="license">No or Unknown</span></td><td><span class="comment-placeholder">—</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-note">
+        <div>📋 基于 <strong>GitHub Markdown 表格</strong> 生成 · 保留原始分类与许可声明 · 点击链接可直接访问规则源</div>
+        <div class="stats">
+            <span>⚙️ 4 个类别</span>
+            <span>📄 共计 39 个条目</span>
+        </div>
+    </div>
+</div>
+<!-- 注：原始表格中的空行/分隔行已被转换为分组标题，多链接按每独立源展开以保持最大清晰度。 -->
+</body>
+</html>
