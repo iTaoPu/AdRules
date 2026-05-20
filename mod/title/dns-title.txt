@@ -7,5 +7,5 @@
 ! Description: List for blocking ads in the Chinese region. Block Ads, Trackers, Malware, HTTPDNS, PCDN. 
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Upstream Sources: https://adrules.sspai.dedyn.io/ulist.html
+! Upstream Sources: https://adrules.ifanr.pp.ua/ulist.html
 
