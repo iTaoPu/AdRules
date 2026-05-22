@@ -7,4 +7,4 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Upstream Sources: https://adrules.ifanr.pp.ua/ulist.html
+! Upstream Sources: https://adrules.sspai.pp.ua/ulist.html
