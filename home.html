@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdRules · Ad Blocking Rules</title>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/88201352" />
+    <script data-cfasync="false" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* 样式与原版一致，此处保留完整 */
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(156,163,175,0.5); border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background-color: rgba(107,114,128,0.5); }
+        .gradient-text { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7); }
+        .dark .gradient-text { background-image: linear-gradient(135deg, #818cf8, #a78bfa, #c084fc); }
+        .feature-card { transition: transform 0.2s ease, box-shadow 0.3s ease; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); }
+        .dark .feature-card:hover { box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6); }
+        .step-number { font-feature-settings: "ss01" on; }
+        .upstream-glow { background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.08) 0%, transparent 70%); }
+        .dark .upstream-glow { background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 70%); }
+        .btn-upstream { background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 8px 24px -4px rgba(99,102,241,0.4); }
+        .btn-upstream:hover { box-shadow: 0 12px 32px -6px rgba(99,102,241,0.6); transform: translateY(-2px) scale(1.02); }
+        .dark .btn-upstream { box-shadow: 0 8px 24px -4px rgba(99,102,241,0.3); }
+        .dark .btn-upstream:hover { box-shadow: 0 12px 32px -6px rgba(99,102,241,0.5); }
+        .upstream-divider { background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), rgba(139,92,246,0.2), transparent); height: 1px; }
+        .dark .upstream-divider { background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), rgba(139,92,246,0.3), transparent); }
+        .bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); flex-shrink: 0; margin-top: 8px; }
+        .dark .bullet-dot { background: linear-gradient(135deg, #818cf8, #a78bfa); }
+        #lang-toggle { top: 4.5rem; }
+        @media (min-width: 640px) { #lang-toggle { top: 4.5rem; } }
+        /* 新增：容器过渡 */
+        #app-content { transition: opacity 0.2s; }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased transition-colors duration-300">
+
+    <!-- ====== 固定按钮（主题 + 语言） ====== -->
+    <button id="theme-toggle" type="button"
+    class="fixed top-4 right-4 z-50 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700 rounded-lg text-sm p-2.5 transition-all">
+    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+    </svg>
+    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100 2h1a1 1 0 100-2H3zM2.05 14.95a1 1 0 011.414 0l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM14.95 2.05a1 1 0 010 1.414l.707.707a1 1 0 011.414-1.414l-.707-.707a1 1 0 01-1.414 0z" fill-rule="evenodd" clip-rule="evenodd" />
+    </svg>
+</button>
+
+<button id="lang-toggle" type="button"
+class="fixed top-16 sm:top-[4.5rem] right-4 z-50 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all">
+<span id="lang-toggle-label">English</span>
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" /></svg>
+</button>
+
+<!-- ====== 主容器 ====== -->
+<div class="flex flex-col min-h-screen">
+
+    <!-- ====== 内容占位，由 JS 完全渲染 ====== -->
+    <div id="app-content"></div>
+
+    <!-- ====== 页脚（也由 JS 渲染） ====== -->
+    <footer id="app-footer" class="w-full mt-auto pt-10 pb-8 border-t border-slate-200 dark:border-slate-700 text-center text-slate-500 dark:text-slate-400"></footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ——— 完整翻译字典（中英） ———
+        const TRANSLATIONS = {
+            en: {
+                // 英雄区
+                heroBadge: '🚀 Open Source · Efficient · Focused on Chinese Region',
+                heroTitle: 'AdRules',
+                heroSubtitle: 'Ad blocking rules tailored for the Chinese internet',
+                heroCta: 'Get Started',
+                // 是什么
+                whatTitle: 'What is AdRules?',
+                whatDesc: '<strong class="text-indigo-600 dark:text-indigo-400">AdRules</strong> is a set of ad-blocking rules specifically designed for the <strong class="text-indigo-600 dark:text-indigo-400">Chinese internet environment</strong>. It aims to help users block various ads, trackers, and malicious scripts on Chinese websites and apps. The rules are continuously updated for major domestic platforms (such as video sites, e-commerce, social media, etc.), balancing <strong class="text-indigo-600 dark:text-indigo-400">high blocking rates</strong> with <strong class="text-indigo-600 dark:text-indigo-400">low false positives</strong>.',
+                whatTagDaily: 'Daily Updates',
+                whatTagMulti: 'Multi-Format',
+                whatTagCommunity: 'Community Driven',
+                // 特性
+                featuresTitle: 'Core Features',
+                featuresSubtitle: 'Flexible blocking solutions for different scenarios',
+                features: [
+                    { icon: '🌐', title: 'Chinese Region Optimized', desc: 'Precise identification of ad slots on major domestic websites and apps, covering video overlays, pop-ups, in-feed ads, and more.' },
+                    { icon: '📦', title: 'Multi-Tool Compatible', desc: 'Available in AdGuard, Clash, Quantumult X, Surge, SmartDNS and more formats, seamlessly integrating into your existing toolchain.' },
+                    { icon: '⚡', title: 'Lightweight & Efficient', desc: 'Refined rules with minimal redundancy, reducing performance impact while maintaining high blocking effectiveness.' },
+                    { icon: '🔄', title: 'Continuously Updated', desc: 'The maintenance team actively tracks website changes, with frequent rule updates to counter new ad strategies.' },
+                    { icon: '🧩', title: 'Modular Design', desc: 'Separate layers for DNS blocking, domain blocking, and rule sets, allowing flexible combinations as needed.' },
+                    { icon: '🤝', title: 'Community Driven', desc: 'Open collaboration. Feedback and suggestions are welcome via community channels to improve the Chinese internet\'s ad filtering ecosystem.' }
+                ],
+                // 步骤
+                howTitle: 'How to Use AdRules',
+                howSubtitle: 'Three steps to enjoy a cleaner browsing experience',
+                howSteps: [
+                    { num: '1', title: 'Choose Your Tool', desc: 'Select the corresponding rule format based on the ad-blocking tool you use (e.g. AdGuard, Clash, Quantumult X).' },
+                    { num: '2', title: 'Get the Link', desc: 'Click the rule link on the tool page, or copy the rule URL directly into your blocking tool.' },
+                    { num: '3', title: 'Enable the Rules', desc: 'Add the rules to your tool and enable them to start blocking ads and trackers on the Chinese internet.' }
+                ],
+                howCta: 'Go to Tool Selector',
+                // 工具
+                toolsTitle: 'Supported Tools & Formats',
+                toolsList: [
+                    'AdGuard (Browser Extension)',
+                    'AdGuard (Mobile)',
+                    'AdGuard (Desktop)',
+                    'AdGuard Home',
+                    'Clash / Mihomo',
+                    'Quantumult X',
+                    'Surge',
+                    'Loon',
+                    'SmartDNS',
+                    'mosdns',
+                    'Sing-box',
+                    'uBlock Origin'
+                ],
+                toolsNote: '* More formats are being added, stay tuned.',
+                // 上游
+                upstreamTitle: 'Upstream Rule Sources',
+                upstreamBadge: 'Rule Aggregation',
+                upstreamLabel: 'Upstream rules list URL:',
+                upstreamDesc: 'This URL aggregates the full set of AdRules rule files, covering <strong class="text-indigo-600 dark:text-indigo-400">DNS blocking</strong>, <strong class="text-indigo-600 dark:text-indigo-400">domain blacklists</strong>, <strong class="text-indigo-600 dark:text-indigo-400">tool-specific rule sets</strong> and more, for easy manual subscription or integration into your ad-blocking tool.',
+                upstreamTagSync: 'Daily Sync',
+                upstreamTagMulti: 'Multi-Format',
+                upstreamTagFree: 'Open Source & Free',
+                upstreamIncludesTitle: '📋 Includes',
+                upstreamIncludesItems: [
+                    'AdBlock standard rules',
+                    'DNS filter lists',
+                    'Clash / Surge rule sets',
+                    'Quantumult X / Loon configs'
+                ],
+                upstreamCta: 'Access Upstream Rules',
+                upstreamNote: 'No config needed, click and use',
+                upstreamFooter: 'Rule files are continuously maintained, check for updates regularly',
+                // 统计
+                stats: [
+                    { number: '10+', label: 'Tool Formats Supported' },
+                    { number: '1000+', label: 'Active Rule Entries' },
+                    { number: '24/7', label: 'Continuous Maintenance' },
+                    { number: 'MIT', label: 'Open Source License' }
+                ],
+                // CTA
+                ctaTitle: 'Start Using AdRules',
+                ctaDesc: 'Visit the tool selector now and configure blocking rules for your device.',
+                ctaCta: 'Open Tool Selector',
+                // 页脚
+                footerCopyright: '© 2022-<span id="current-year"></span> 蜂巢·隱曜 · Powered by ❤️ and ☕',
+                footerLicense: 'AdRules is open-sourced under the MIT License · Thanks to all contributors'
+            },
+            zh: {
+                heroBadge: '🚀 开源 · 高效 · 专注中文区',
+                heroTitle: 'AdRules',
+                heroSubtitle: '为中文互联网量身打造的广告拦截规则集',
+                heroCta: '快速上手',
+                whatTitle: '什么是 AdRules？',
+                whatDesc: '<strong class="text-indigo-600 dark:text-indigo-400">AdRules</strong> 是一套专为<strong class="text-indigo-600 dark:text-indigo-400">中文互联网环境</strong>设计的广告拦截规则集合。旨在帮助用户屏蔽中文网站和应用中的各类广告、追踪器及恶意脚本。规则针对国内主流平台（如视频网站、电商、社交媒体等）持续更新，兼顾<strong class="text-indigo-600 dark:text-indigo-400">高拦截率</strong>与<strong class="text-indigo-600 dark:text-indigo-400">低误杀</strong>。',
+                whatTagDaily: '日均更新',
+                whatTagMulti: '多格式支持',
+                whatTagCommunity: '社区驱动',
+                featuresTitle: '核心特性',
+                featuresSubtitle: '为不同场景提供灵活的拦截方案',
+                features: [
+                    { icon: '🌐', title: '中文区专项优化', desc: '针对国内主流网站、APP 内广告位精准识别，覆盖视频贴片、弹窗、信息流等常见广告形式。' },
+                    { icon: '📦', title: '多工具兼容', desc: '提供 AdGuard、Clash、Quantumult X、Surge、SmartDNS 等多种格式，无缝接入你的现有工具链。' },
+                    { icon: '⚡', title: '轻量高效', desc: '规则精炼，减少冗余条目，在保证拦截效果的同时降低对设备性能的影响。' },
+                    { icon: '🔄', title: '持续更新', desc: '维护团队积极跟进网站改动，规则库高频更新，及时应对新的广告投放策略。' },
+                    { icon: '🧩', title: '模块化设计', desc: '区分 DNS 拦截、域名拦截、规则集等不同层级，可根据需求自由组合使用。' },
+                    { icon: '🤝', title: '社区驱动', desc: '开放协作，欢迎通过社区渠道反馈建议，共同完善中文互联网的广告过滤生态。' }
+                ],
+                howTitle: '如何使用 AdRules',
+                howSubtitle: '三步即可开始享受清爽的浏览体验',
+                howSteps: [
+                    { num: '1', title: '选择工具', desc: '根据你使用的广告拦截工具（如 AdGuard、Clash、Quantumult X 等）选择对应的规则格式。' },
+                    { num: '2', title: '获取链接', desc: '在工具页面点击对应的规则链接，或直接复制规则地址到你的拦截工具中。' },
+                    { num: '3', title: '启用规则', desc: '将规则添加到工具中并启用，即可开始拦截中文互联网上的广告与追踪器。' }
+                ],
+                howCta: '立即前往工具选择器',
+                toolsTitle: '支持的工具 & 格式',
+                toolsList: [
+                    'AdGuard (浏览器扩展)',
+                    'AdGuard (移动端)',
+                    'AdGuard (桌面端)',
+                    'AdGuard Home',
+                    'Clash / Mihomo',
+                    'Quantumult X',
+                    'Surge',
+                    'Loon',
+                    'SmartDNS',
+                    'mosdns',
+                    'Sing-box',
+                    'uBlock Origin'
+                ],
+                toolsNote: '* 更多格式持续增加中，欢迎关注更新。',
+                upstreamTitle: '上游规则源',
+                upstreamBadge: '规则聚合',
+                upstreamLabel: '上游规则列表地址：',
+                upstreamDesc: '该地址聚合了 AdRules 全量规则文件，涵盖 <strong class="text-indigo-600 dark:text-indigo-400">DNS 拦截</strong>、<strong class="text-indigo-600 dark:text-indigo-400">域名黑名单</strong>、<strong class="text-indigo-600 dark:text-indigo-400">工具专用规则集</strong> 等多种格式，便于手动订阅或集成到您的广告拦截工具中。',
+                upstreamTagSync: '每日同步',
+                upstreamTagMulti: '多格式支持',
+                upstreamTagFree: '开源免费',
+                upstreamIncludesTitle: '📋 包含内容',
+                upstreamIncludesItems: [
+                    'AdBlock 标准规则',
+                    'DNS 过滤列表',
+                    'Clash / Surge 规则集',
+                    'Quantumult X / Loon 配置'
+                ],
+                upstreamCta: '访问上游规则列表',
+                upstreamNote: '无需配置，即点即用',
+                upstreamFooter: '规则文件持续维护，建议定期检查更新',
+                stats: [
+                    { number: '10+', label: '工具格式支持' },
+                    { number: '1000+', label: '活跃规则条目' },
+                    { number: '24/7', label: '持续维护更新' },
+                    { number: 'MIT', label: '开源协议' }
+                ],
+                ctaTitle: '开始使用 AdRules',
+                ctaDesc: '立即访问工具选择器，为你的设备配置专属拦截规则。',
+                ctaCta: '打开工具选择器',
+                footerCopyright: '© 2022-<span id="current-year"></span> 蜂巢·隱曜 · 用 ❤️ 和 ☕ 驱动',
+                footerLicense: 'AdRules 采用 MIT 协议开源 · 感谢所有贡献者'
+            }
+        };
+
+        // ——— 当前语言 ———
+        let currentLang = 'en';
+
+        // ——— DOM 引用 ———
+        const contentEl = document.getElementById('app-content');
+        const footerEl = document.getElementById('app-footer');
+        const langToggleBtn = document.getElementById('lang-toggle');
+        const langLabel = document.getElementById('lang-toggle-label');
+
+        // ——— 渲染完整页面 ———
+        function renderPage(lang) {
+            const t = TRANSLATIONS[lang];
+            if (!t) return;
+
+            // 1. 渲染主内容
+            contentEl.innerHTML = `
+                <!-- 英雄区 -->
+                <header class="relative overflow-hidden pt-16 pb-12 sm:pt-24 sm:pb-20 px-4 sm:px-6 lg:px-8">
+                    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50/80 via-white/60 to-purple-50/80 dark:from-slate-800/60 dark:via-slate-900/80 dark:to-slate-800/60"></div>
+                    <div class="absolute inset-0 -z-10 opacity-30 dark:opacity-10" style="background-image: radial-gradient(circle at 20% 50%, #6366f1 0%, transparent 60%), radial-gradient(circle at 80% 20%, #a855f7 0%, transparent 50%);"></div>
+                    <div class="max-w-4xl mx-auto text-center relative">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-100/70 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-sm font-medium mb-6 backdrop-blur-sm border border-indigo-200/50 dark:border-indigo-700/30">
+                            <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                            ${t.heroBadge}
+                        </div>
+                        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+                            <span class="gradient-text">${t.heroTitle}</span>
+                        </h1>
+                        <p class="mt-4 text-xl sm:text-2xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-light">${t.heroSubtitle}</p>
+                        <div class="mt-8 flex flex-wrap justify-center gap-4">
+                            <a href="#how-to-use" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50 hover:-translate-y-0.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                ${t.heroCta}
+                            </a>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- 主内容 -->
+                <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+                    <!-- 是什么 -->
+                    <section class="mb-20 animate-[slide-up_0.6s_ease-out_0.1s_both]">
+                        <div class="bg-white/70 dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 border border-slate-200/50 dark:border-slate-700/50">
+                            <h2 class="text-3xl font-bold mb-4 flex items-center gap-3"><span class="text-4xl">🧐</span> ${t.whatTitle}</h2>
+                            <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">${t.whatDesc}</p>
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium border border-indigo-200/50 dark:border-indigo-700/30">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span> ${t.whatTagDaily}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium border border-indigo-200/50 dark:border-indigo-700/30">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> ${t.whatTagMulti}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium border border-indigo-200/50 dark:border-indigo-700/30">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> ${t.whatTagCommunity}
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 核心特性 -->
+                    <section class="mb-20 animate-[slide-up_0.6s_ease-out_0.2s_both]">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold inline-block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">✨ ${t.featuresTitle}</h2>
+                            <p class="text-slate-500 dark:text-slate-400 mt-2">${t.featuresSubtitle}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${t.features.map(f => `
+                                <div class="feature-card bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all">
+                                    <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-2xl mb-4">${f.icon}</div>
+                                    <h3 class="text-xl font-semibold mb-2">${f.title}</h3>
+                                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${f.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+
+                    <!-- 如何使用 -->
+                    <section id="how-to-use" class="mb-20 animate-[slide-up_0.6s_ease-out_0.3s_both] scroll-mt-20">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold inline-block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">🛠️ ${t.howTitle}</h2>
+                            <p class="text-slate-500 dark:text-slate-400 mt-2">${t.howSubtitle}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                            <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-300/50 via-purple-300/50 to-indigo-300/50 -translate-y-1/2 z-0"></div>
+                            ${t.howSteps.map(s => `
+                                <div class="relative z-10 bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-7 border border-slate-200/60 dark:border-slate-700/60 shadow-md text-center">
+                                    <div class="w-12 h-12 mx-auto rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-extrabold step-number mb-4 border-2 border-indigo-200 dark:border-indigo-700/50">${s.num}</div>
+                                    <h3 class="text-lg font-semibold mb-2">${s.title}</h3>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${s.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-10 text-center">
+                            <a href="#" class="js-tool-selector inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50 hover:-translate-y-0.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.5 9.5L4 4l5.5 3.5" /></svg>
+                                ${t.howCta}
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- 工具兼容性 -->
+                    <section class="mb-20 animate-[slide-up_0.6s_ease-out_0.4s_both]">
+                        <div class="bg-white/70 dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 border border-slate-200/50 dark:border-slate-700/50">
+                            <h2 class="text-3xl font-bold mb-6 flex items-center gap-3"><span class="text-4xl">🔌</span> ${t.toolsTitle}</h2>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                                ${t.toolsList.map(tool => `
+                                    <div class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600/50 shadow-sm">
+                                        <span class="text-indigo-500 dark:text-indigo-400 text-lg">•</span> ${tool}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">${t.toolsNote}</p>
+                        </div>
+                    </section>
+
+                    <!-- 上游规则源 -->
+                    <section class="mb-20 animate-[slide-up_0.6s_ease-out_0.45s_both]">
+                        <div class="relative bg-white/70 dark:bg-slate-800/50 backdrop-blur-sm rounded-3xl shadow-xl p-8 sm:p-10 border border-slate-200/50 dark:border-slate-700/50 overflow-hidden">
+                            <div class="absolute inset-0 upstream-glow pointer-events-none"></div>
+                            <div class="absolute -top-20 -right-20 w-64 h-64 bg-indigo-200/25 dark:bg-indigo-500/8 rounded-full blur-3xl pointer-events-none"></div>
+                            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-200/25 dark:bg-purple-500/8 rounded-full blur-3xl pointer-events-none"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+                                    <h2 class="text-3xl font-bold flex items-center gap-3"><span class="text-4xl">📡</span> ${t.upstreamTitle}</h2>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-xs font-semibold rounded-full border border-indigo-200/50 dark:border-indigo-700/30">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${t.upstreamBadge}
+                                    </span>
+                                </div>
+                                <div class="upstream-divider w-full my-4"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mt-2">
+                                    <div class="md:col-span-3 space-y-3">
+                                        <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">${t.upstreamLabel}</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">${t.upstreamDesc}</p>
+                                        <div class="flex flex-wrap items-center gap-3 mt-1">
+                                            <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/50 px-3 py-1 rounded-full">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> ${t.upstreamTagSync}
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/50 px-3 py-1 rounded-full">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> ${t.upstreamTagMulti}
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/50 px-3 py-1 rounded-full">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${t.upstreamTagFree}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-2 space-y-2.5 bg-indigo-50/60 dark:bg-indigo-900/10 rounded-xl p-5 border border-indigo-100/50 dark:border-indigo-700/20">
+                                        <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">${t.upstreamIncludesTitle}</p>
+                                        ${t.upstreamIncludesItems.map(item => `
+                                            <div class="flex items-start gap-2.5">
+                                                <span class="bullet-dot"></span>
+                                                <span class="text-sm text-slate-600 dark:text-slate-300">${item}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    <a href="#" class="js-upstream-link btn-upstream inline-flex items-center gap-2.5 px-8 py-3.5 text-white font-semibold rounded-xl transition-all duration-300 group">
+                                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:rotate-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                        ${t.upstreamCta} <span class="text-xs opacity-80 font-normal ml-1 hidden sm:inline">→</span>
+                                    </a>
+                                    <span class="text-xs text-slate-400 dark:text-slate-500 italic flex items-center gap-1">
+                                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-indigo-300 dark:bg-indigo-500/50"></span> ${t.upstreamNote}
+                                    </span>
+                                </div>
+                                <p class="mt-5 text-xs text-center text-slate-400 dark:text-slate-500 border-t border-slate-200/50 dark:border-slate-700/50 pt-4">${t.upstreamFooter}</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 项目数据 -->
+                    <section class="mb-20 animate-[slide-up_0.6s_ease-out_0.5s_both]">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                            ${t.stats.map(s => `
+                                <div class="bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 shadow-sm">
+                                    <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">${s.number}</div>
+                                    <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">${s.label}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+
+                    <!-- CTA -->
+                    <section class="mb-16 animate-[slide-up_0.6s_ease-out_0.6s_both]">
+                        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 p-10 sm:p-14 text-center shadow-2xl shadow-indigo-500/20">
+                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.2) 0%, transparent 50%);"></div>
+                            <div class="relative z-10">
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">${t.ctaTitle}</h2>
+                                <p class="text-indigo-100 text-lg max-w-2xl mx-auto mb-6">${t.ctaDesc}</p>
+                                <div class="flex flex-wrap justify-center gap-4">
+                                    <a href="#" class="js-tool-selector inline-flex items-center gap-2 px-8 py-3.5 bg-white text-indigo-700 font-bold rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                        ${t.ctaCta}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            `;
+
+            // 2. 渲染页脚
+            footerEl.innerHTML = `
+                <div class="max-w-4xl mx-auto px-4">
+                    <p class="text-sm text-slate-400 dark:text-slate-500">${t.footerCopyright}</p>
+                    <p class="text-xs text-slate-400/70 dark:text-slate-500/70 mt-1">${t.footerLicense}</p>
+                </div>
+            `;
+
+            // 3. 更新年份
+            const yearSpan = footerEl.querySelector('#current-year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // 4. 更新语言按钮标签
+            langLabel.textContent = lang === 'en' ? 'English' : '中文';
+            document.documentElement.lang = lang;
+
+            // 5. 重新绑定动态链接（工具选择器、上游规则）
+            const origin = window.location.origin;
+            document.querySelectorAll('.js-tool-selector').forEach(el => el.href = origin + '/');
+            document.querySelectorAll('.js-upstream-link').forEach(el => el.href = origin + '/ulist.html');
+
+            // 6. 外部链接安全
+            document.querySelectorAll('a[href^="http"]').forEach(link => {
+                if (!link.href.includes(window.location.host)) {
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener noreferrer');
+                }
+            });
+        }
+
+        // ——— 切换语言 ———
+        function setLanguage(lang) {
+            currentLang = lang;
+            renderPage(lang);
+            localStorage.setItem('adrules-lang', lang);
+        }
+
+        // ——— 主题切换（保留原逻辑） ———
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                htmlEl.classList.add('dark');
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            } else {
+                htmlEl.classList.remove('dark');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+        setTheme(initialTheme);
+
+        themeToggleBtn.addEventListener('click', function() {
+            const isDark = htmlEl.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        // ——— 语言切换事件 ———
+        langToggleBtn.addEventListener('click', function() {
+            const nextLang = currentLang === 'en' ? 'zh' : 'en';
+            setLanguage(nextLang);
+        });
+
+        // ——— 初始化（默认英文，保留用户选择） ———
+        const storedLang = localStorage.getItem('adrules-lang');
+        const initialLang = storedLang || 'en';
+        setLanguage(initialLang);
+
+    });
+</script>
+</body>
+</html>
