@@ -1,0 +1,105 @@
+name: Update Rules
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  push:
+    paths:
+      - 'script/*'
+      - 'mod/*'
+      - 'index.html'
+      - '.github/workflows/*'
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - Manual-Update
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-latest
+    permissions: # 显式声明权限，防止 GITHUB_TOKEN 权限不足
+      contents: write
+      actions: write
+
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.x'
+
+    - name: Update Upstream
+      continue-on-error: false
+      run: |
+        pip install requests
+        mkdir -p ./tmp
+        bash ./script/update_upstream.sh
+        # 优化打包逻辑，防止空文件夹报错
+        tar -czvf archive.tar.gz -C ./tmp . || touch archive.tar.gz
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        name: archive.tar.gz
+        path: archive.tar.gz
+
+    - name: Build Rules
+      continue-on-error: false
+      run: |
+        bash ./script/update_content.sh
+        bash ./script/update_dns.sh
+        rm -f archive.tar.gz
+
+    - name: Update other rules
+      run: |
+        mkdir -p rules
+        cd rules
+        rm -f *.txt
+        wget -q https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt || echo "Download failed"
+        cd ../
+
+    - name: Git push assets to Github
+      run: |
+        # 1. 备份工作流和脚本，防止被 git rm 误删
+        mkdir -p backup_scripts
+        cp -r .github script backup_scripts/ || true
+
+        # 2. 模拟你原本的 orphan 逻辑
+        git config --local user.name "actions"
+        git config --local user.email "action@github.com"
+        git checkout --orphan temp_branch
+        
+        # 3. 还原必要文件
+        cp -r backup_scripts/.github .
+        cp -r backup_scripts/script .
+        rm -rf backup_scripts
+
+        # 4. 添加目标文件
+        git add *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || echo "No assets"
+        
+        # 5. 检查是否有文件可以提交
+        if git diff --staged --quiet; then
+          echo "Nothing changed"
+        else
+          git commit -m "Update at $(TZ=UTC-8 date +"%Y-%m-%d %H:%M")"
+          # 强制覆盖 main 分支
+          git branch -M main
+          git push -f origin main
+        fi
+
+    - name: Auto Build
+      continue-on-error: true
+      run: |
+        if [ -n "${{ secrets.CF_TOKEN }}" ]; then
+          curl -X POST "${{ secrets.CF_TOKEN }}"
+        fi
+
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_days: 2
+        keep_minimum_runs: 5
