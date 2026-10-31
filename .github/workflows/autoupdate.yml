@@ -1,0 +1,182 @@
+name: Update Rules
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  push:
+    paths:
+      - 'script/*'
+      - 'mod/*'
+      - 'index.html'
+      - '.github/workflows/*'
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - Manual-Update
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.x'
+
+    - name: Update Upstream
+      continue-on-error: false
+      run: |
+        pip install requests
+        mkdir -p ./tmp
+        bash ./script/update_upstream.sh
+        tar -czvf archive.tar.gz -C ./tmp . || touch archive.tar.gz
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: archive.tar.gz
+        path: archive.tar.gz
+
+    - name: Build Rules
+      continue-on-error: false
+      run: |
+        bash ./script/update_content.sh
+        bash ./script/update_dns.sh
+        rm -f archive.tar.gz
+
+    - name: Update other rules
+      run: |
+        mkdir -p rules
+        cd rules
+        rm -f *.txt
+        wget -q https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt || echo "Download failed"
+        cd ../
+
+    - name: Git push assets to main and script branches
+      run: |
+        # 1. 备份工作流、脚本和 mod 文件夹
+        mkdir -p backup_scripts
+        cp -r .github script mod backup_scripts/ || true
+
+        # 2. 获取当前时间并生成时间标签
+        CURRENT_TIME=$(TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S")
+        TIME_TAG=$(echo "$CURRENT_TIME" | tr ' ' '_')
+
+        # 3. 切换到孤儿分支开始构建 main 分支内容
+        git config --local user.name "actions"
+        git config --local user.email "action@github.com"
+        git checkout --orphan temp_branch
+        
+        # 4. 还原必要文件
+        cp -r backup_scripts/.github .
+        cp -r backup_scripts/script .
+        cp -r backup_scripts/mod .
+
+        # 5. 生成 main 分支的 README.md
+        echo '<div align="center">' > README.md
+        echo '' >> README.md
+        echo '# 🛡️ Rules & Assets Auto Update' >> README.md
+        echo '' >> README.md
+        echo '> **自动化分流规则、去广告规则及订阅资产同步中心**' >> README.md
+        echo '' >> README.md
+        echo "[![Status](https://img.shields.io/badge/Status-Active-success.svg?style=flat-square&logo=github)](https://github.com/${{ github.repository }})" >> README.md
+        echo "[![Schedule](https://img.shields.io/badge/Schedule-Every%208h-blue.svg?style=flat-square&logo=clockify)](https://github.com/${{ github.repository }})" >> README.md
+        echo "[![Last Update](https://img.shields.io/badge/Last%20Sync-${TIME_TAG}(CST)-informational.svg?style=flat-square&logo=files-dot-io)](https://github.com/${{ github.repository }})" >> README.md
+        echo '' >> README.md
+        echo '</div>' >> README.md
+        echo '' >> README.md
+        echo '---' >> README.md
+        echo '' >> README.md
+        echo '### ⏱️ 同步状态' >> README.md
+        echo "* **最后更新时间**：\`${CURRENT_TIME} (CST)\`" >> README.md
+        echo '* **运行频率**：每 6 小时自动构建与同步一次' >> README.md
+        echo '* **构建状态**：🟢 正常运行' >> README.md
+        echo '' >> README.md
+        echo '---' >> README.md
+        echo '' >> README.md
+        echo '### 📦 资产目录说明' >> README.md
+        echo '' >> README.md
+        echo '| 目录 / 文件 | 说明 |' >> README.md
+        echo '| :--- | :--- |' >> README.md
+        echo '| `script/` | 核心更新与解析脚本 |' >> README.md
+        echo '| `mod/` | 规则模块与扩展配置 |' >> README.md
+        echo '| `rules/` | 第三方及聚合规则资产 |' >> README.md
+        echo '| `index.html` | 项目引导或聚合展示页 |' >> README.md
+        echo '| `ulist.html` | 广告过滤规则列表 |' >> README.md
+        echo '| `home.html` | 项目展示说明页 |' >> README.md
+        echo '' >> README.md
+        echo '> *此仓库通过 GitHub Actions 持续集成自动维护，所有规则与产物均实时同步至最新状态。*' >> README.md
+
+        # 6. 提交并推送到 main 分支
+        git add README.md *.{conf,txt,list,html,json,srs,mrs} rules/* mod/* || echo "No assets"
+        
+        if git diff --staged --quiet; then
+          echo "Main branch: Nothing changed"
+        else
+          git commit -m "Update rules at ${CURRENT_TIME}"
+          git branch -M main
+          git push -f origin main
+        fi
+
+        # ==========================================
+        # 7. 切换到 script 分支（保留脚本、工作流和 mod 文件夹）
+        # ==========================================
+        git checkout --orphan script_temp_branch
+        
+        # 重新还原基础文件与 mod 文件夹
+        cp -r backup_scripts/.github .
+        cp -r backup_scripts/script .
+        cp -r backup_scripts/mod .
+        rm -rf backup_scripts
+
+        # 生成 script 分支专属的 README.md
+        echo '<div align="center">' > README.md
+        echo '' >> README.md
+        echo '# 🛠️ Script Branch' >> README.md
+        echo '' >> README.md
+        echo '> **核心脚本与工作流维护分支**' >> README.md
+        echo '' >> README.md
+        echo "[![Last Update](https://img.shields.io/badge/Last%20Sync-${TIME_TAG}(CST)-informational.svg?style=flat-square&logo=files-dot-io)](https://github.com/${{ github.repository }})" >> README.md
+        echo '' >> README.md
+        echo '</div>' >> README.md
+        echo '' >> README.md
+        echo '---' >> README.md
+        echo '* **最后更新时间**：\`${CURRENT_TIME} (CST)\`' >> README.md
+        echo '* **说明**：此分支包含核心脚本、工作流配置以及 mod 规则模块。' >> README.md
+
+        # 8. 清理杂质文件（注意：此处去掉了 mod，不会删除 mod 文件夹）
+        git rm -rf --ignore-unmatch *.txt *.conf *.list *.json *.srs *.mrs rules 2>/dev/null || true
+
+        # 9. 精准添加工作流、README、script 和 mod 目录
+        git add README.md .github/ script/*.sh script/*.py script/README.md mod/ || echo "No script assets"
+        
+        if git diff --staged --quiet; then
+          echo "Script branch: Nothing changed"
+        else
+          git commit -m "Update scripts and keep mod at ${CURRENT_TIME}"
+          git branch -M script
+          git push -f origin script
+        fi
+
+    - name: Auto Build
+      continue-on-error: true
+      run: |
+        if [ -n "${{ secrets.CF_TOKEN }}" ]; then
+          curl -X POST "${{ secrets.CF_TOKEN }}"
+        fi
+
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
+        retain_days: 2
+        keep_minimum_runs: 5
