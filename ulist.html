@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Blocking Rules List · Consolidated</title>
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-container: #ffffff;
+            --border-container: #e2e8f0;
+            --text-primary: #0b1c2f;
+            --text-secondary: #4a5a72;
+            --text-muted: #4f688b;
+            --header-bg: #f1f6fd;
+            --header-text: #264d7c;
+            --border-header: #cbd5e1;
+            --row-hover: #f9fcff;
+            --border-row: #e6edf4;
+            --group-bg: #e9f0fa;
+            --group-text: #0f3a68;
+            --group-border: #a7c0da;
+            --warning-bg: #fffbeb;
+            --warning-text: #92400e;
+            --warning-border: #f59e0b;
+            --link-color: #0969da;
+            --link-hover: #1b4f8b;
+            --badge-bg: #ddf4ff;
+            --badge-text: #0550ae;
+            --badge-border: #b6d8f7;
+            --license-bg: #f4f9ff;
+            --license-text: #264d6e;
+            --comment-color: #9b9b9b;
+            --footer-bg: #fafdff;
+            --footer-border: #dce5ed;
+            --stats-bg: #e4ebf5;
+            --stats-text: #264d7c;
+            --shadow: 0 20px 40px -12px rgba(0,20,40,0.25);
+            --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.02);
+            --btn-bg: #f1f6fd;
+            --btn-border: #cbd5e1;
+            --btn-text: #264d7c;
+            --btn-hover-bg: #dce8f5;
+            --btn-hover-border: #a7c0da;
+        }
+
+        /* ===== Dark theme ===== */
+        body.dark {
+            --bg-body: #0f172a;
+            --bg-container: #1e293b;
+            --border-container: #334155;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --header-bg: #1e293b;
+            --header-text: #93b4e0;
+            --border-header: #475569;
+            --row-hover: #1e2a3a;
+            --border-row: #2d3a4f;
+            --group-bg: #1a2639;
+            --group-text: #aac8e4;
+            --group-border: #3b4c6b;
+            --warning-bg: #2d2a1a;
+            --warning-text: #fcd34d;
+            --warning-border: #f59e0b;
+            --link-color: #60a5fa;
+            --link-hover: #93bbfc;
+            --badge-bg: #1e3a5f;
+            --badge-text: #8bb8f0;
+            --badge-border: #2a4a7a;
+            --license-bg: #1a2a3f;
+            --license-text: #a0c4e8;
+            --comment-color: #6b7a8f;
+            --footer-bg: #0f1a2a;
+            --footer-border: #2d3a4f;
+            --stats-bg: #1e2a3f;
+            --stats-text: #93b4e0;
+            --shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+            --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.3);
+            --btn-bg: #1e2a3f;
+            --btn-border: #475569;
+            --btn-text: #94a3b8;
+            --btn-hover-bg: #2a3a55;
+            --btn-hover-border: #64748b;
+        }
+
+        /* ===== Global ===== */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: var(--bg-body);
+            margin: 0;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-container);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border-container);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .header {
+            padding: 1.5rem 2rem 0.5rem 2rem;
+            border-bottom: 1px solid var(--border-container);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .header-left h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 0.25rem 0;
+            background: linear-gradient(145deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            margin: 0.2rem 0 0 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.2rem;
+        }
+        .btn-toggle {
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            border-radius: 40px;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--btn-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-toggle:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--btn-hover-border);
+        }
+        .btn-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .warning {
+            background: var(--warning-bg);
+            border-left: 6px solid var(--warning-border);
+            padding: 1rem 2rem;
+            margin: 1.5rem 2rem 0.5rem 2rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: var(--warning-text);
+            box-shadow: 0 2px 8px rgba(245,158,11,0.08);
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .warning::before {
+            content: "⚠️";
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 0 2rem 2rem 2rem;
+            border-radius: 18px;
+            border: 1px solid var(--border-container);
+            background: var(--bg-container);
+            box-shadow: var(--shadow-inset);
+            transition: border-color 0.3s, background 0.3s;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 900px;
+            table-layout: auto;
+            white-space: normal;
+        }
+        th {
+            background: var(--header-bg);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--header-text);
+            border-bottom: 2px solid var(--border-header);
+            padding: 1rem 1rem;
+            text-align: left;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border-row);
+            vertical-align: top;
+            background-color: var(--bg-container);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        tr:last-child td { border-bottom: none; }
+        .group-header {
+            background: var(--group-bg) !important;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+            color: var(--group-text);
+            border-bottom: 2px solid var(--group-border);
+            border-top: 2px solid var(--group-border);
+        }
+        .group-header td {
+            background: var(--group-bg) !important;
+            padding: 0.7rem 1rem;
+        }
+        .group-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 650;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .group-header h3::before {
+            content: "▍";
+            font-size: 1.4rem;
+            opacity: 0.7;
+        }
+        td:first-child, th:first-child { padding-left: 1.5rem; }
+        td:last-child, th:last-child { padding-right: 1.5rem; }
+        .source-link {
+            word-break: break-all;
+            text-decoration: none;
+            color: var(--link-color);
+            font-weight: 500;
+            border-bottom: 1px dotted var(--border-header);
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .source-link:hover {
+            color: var(--link-hover);
+            border-bottom: 1px solid;
+        }
+        .badge-type {
+            display: inline-block;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            letter-spacing: 0.01em;
+            border: 1px solid var(--badge-border);
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .license {
+            font-size: 0.85rem;
+            color: var(--license-text);
+            background: var(--license-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 24px;
+            display: inline-block;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background 0.3s, color 0.3s;
+        }
+        .comment-placeholder {
+            color: var(--comment-color);
+            font-style: italic;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+        tr:hover td {
+            background-color: var(--row-hover);
+            transition: background 0.1s;
+        }
+        .footer-note {
+            padding: 1.2rem 2rem 2rem 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--footer-border);
+            background: var(--footer-bg);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            transition: color 0.3s, border-color 0.3s, background 0.3s;
+        }
+        .footer-note a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+        .stats span {
+            background: var(--stats-bg);
+            color: var(--stats-text);
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+            transition: background 0.3s, color 0.3s;
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.5rem; }
+            .header, .warning, .footer-note { padding-left: 1rem; padding-right: 1rem; }
+            .table-wrapper { margin: 0 1rem 1.5rem 1rem; }
+            .header { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1 data-i18n="title">Ad Blocking Rules List · Consolidated</h1>
+            <div class="subtitle">
+                <span data-i18n="subtitle">Converted from GitHub Markdown · Includes Lite / Normal / Plus / DNS categories</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <!-- 主题切换按钮（太阳/月亮图标） -->
+            <button class="btn-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+                <svg id="theme-icon" viewBox="0 0 24 24" width="18" height="18">
+                    <!-- 默认月亮（浅色模式显示，表示可切换到深色） -->
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <span id="theme-label">Light</span>
+            </button>
+            <!-- 语言切换 -->
+            <button class="btn-toggle" id="lang-toggle" type="button">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                <span id="lang-label">English</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="warning" data-i18n="warning">
+        <strong>Some information may be outdated</strong> — Rule links, licenses, or maintenance status should be verified at each repository.
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="table.header.source">📌 List Source</th>
+                    <th data-i18n="table.header.type">🔖 Type</th>
+                    <th data-i18n="table.header.author">👤 Author</th>
+                    <th data-i18n="table.header.license">⚖️ License</th>
+                    <th data-i18n="table.header.notes">      </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ========= Lite ========= -->
+                <tr class="group-header"><td colspan="5"><h3 data-i18n="group.lite">⚡ Lite Basic Filtering</h3></td></tr>
+
+                <!-- xinggsf -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/mv.txt" target="_blank" rel="noopener">https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/mv.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.xinggsf">xinggsf</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- damengzhu -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt" target="_blank">https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.damengzhu">damengzhu</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- Noyllopa -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/Noyllopa/NoAppDownload/master/NoAppDownload.txt" target="_blank">https://raw.githubusercontent.com/Noyllopa/NoAppDownload/master/NoAppDownload.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.noyllopa">Noyllopa</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- AdGuard 224 -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/extension/ublock/filters/224.txt" target="_blank">https://filters.adtidy.org/extension/ublock/filters/224.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- cjx82630 -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt" target="_blank">https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.cjx82630">cjx82630</td><td><span class="license" data-i18n="license.lgpl3">LGPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- reek -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt" target="_blank">https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.reek">reek</td><td><span class="license" data-i18n="license.ccbysa4">CC BY-SA 4.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- easylist antiadblock -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" target="_blank">https://easylist-downloads.adblockplus.org/antiadblockfilters.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.easylist">EasyList</td><td><span class="license" data-i18n="license.easylist">EasyList Licence</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- abp-filters-anti-cv -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt" target="_blank">https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.abp">Adblock Plus Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+
+                <!-- ========= Normal ========= -->
+                <tr class="group-header"><td colspan="5"><h3 data-i18n="group.normal">🌀 Normal (Extended from Lite)</h3></td></tr>
+
+                <!-- DandelionSprout -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/DandelionSprout/adfilt/master/ClearURLs%20for%20uBo/clear_urls_uboified.txt" target="_blank">https://raw.githubusercontent.com/DandelionSprout/adfilt/master/ClearURLs%20for%20uBo/clear_urls_uboified.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.dandelion">DandelionSprout</td><td><span class="license" data-i18n="license.dandelion">DandelionSprout's Licence</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- AdGuard 3_optimized -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/extension/ublock/filters/3_optimized.txt" target="_blank">https://filters.adtidy.org/extension/ublock/filters/3_optimized.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- EasyPrivacy -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/easyprivacy.txt" target="_blank">https://easylist-downloads.adblockplus.org/easyprivacy.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.easylist">EasyList</td><td><span class="license" data-i18n="license.easylist">EasyList Repository Licences</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+
+                <!-- ========= Plus ========= -->
+                <tr class="group-header"><td colspan="5"><h3 data-i18n="group.plus">⚙️ Plus (Enhanced from Normal)</h3></td></tr>
+
+                <!-- uBlock annoyances -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt" target="_blank">https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.ublock">uBlock Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- uBlock privacy -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt" target="_blank">https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.ublock">uBlock Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+
+                <!-- AdGuard windows filters multiple -->
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/2.txt" target="_blank">https://filters.adtidy.org/windows/filters/2.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/11.txt" target="_blank">https://filters.adtidy.org/windows/filters/11.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/3.txt" target="_blank">https://filters.adtidy.org/windows/filters/3.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/224.txt" target="_blank">https://filters.adtidy.org/windows/filters/224.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/14.txt" target="_blank">https://filters.adtidy.org/windows/filters/14.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/4.txt" target="_blank">https://filters.adtidy.org/windows/filters/4.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <tr><td><a class="source-link" href="https://filters.adtidy.org/windows/filters/17.txt" target="_blank">https://filters.adtidy.org/windows/filters/17.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.adguard">AdGuard Team</td><td><span class="license" data-i18n="license.gpl3">GPL-3.0 license</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+
+                <!-- ========= DNS ========= -->
+                <tr class="group-header"><td colspan="5"><h3 data-i18n="group.dns">🌐 DNS (Content‑based / Hosts)</h3></td></tr>
+
+                <!-- adavoid ultimate ad -->
+                <tr><td><a class="source-link" href="https://filters.adavoid.org/ultimate-ad-filter.txt" target="_blank">https://filters.adavoid.org/ultimate-ad-filter.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.ultimate">ultimate Team</td><td><span class="license" data-i18n="license.gpl3ccby">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- adavoid ultimate privacy -->
+                <tr><td><a class="source-link" href="https://filters.adavoid.org/ultimate-privacy-filter.txt" target="_blank">https://filters.adavoid.org/ultimate-privacy-filter.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.ultimate">ultimate Team</td><td><span class="license" data-i18n="license.gpl3ccby">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- fanboy annoyance -->
+                <tr><td><a class="source-link" href="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.fanboy">Fanboy Team</td><td><span class="license" data-i18n="license.gpl3ccby">GNU GPLv3 / CC BY 3.0</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- banbendalao -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/banbendalao/ADgk/master/ADgk.txt" target="_blank">https://raw.githubusercontent.com/banbendalao/ADgk/master/ADgk.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.banbendalao">Banbendalao</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- hoshsadiq -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt" target="_blank">https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.hoshsadiq">hoshsadiq</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- durablenapkin -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt" target="_blank">https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.durablenapkin">durablenapkin</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- d3ward -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/d3ward/toolz/master/src/d3host.adblock" target="_blank">https://raw.githubusercontent.com/d3ward/toolz/master/src/d3host.adblock</a></td><td><span class="badge-type">ABP</span></td><td data-i18n="author.d3ward">d3ward</td><td><span class="license" data-i18n="license.ccbyncsa">CC BY-NC-SA</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- Adaway hosts -->
+                <tr><td><a class="source-link" href="https://adaway.org/hosts.txt" target="_blank">https://adaway.org/hosts.txt</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.adaway">Adaway Team</td><td><span class="license" data-i18n="license.ccby3">CC Attribution 3.0</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- jdlingyu -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts" target="_blank">https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.jdlingyu">jdlingyu</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- crazy-max -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt" target="_blank">https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.crazymax">crazy-max</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- quidsup -->
+                <tr><td><a class="source-link" href="https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts" target="_blank">https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.quidsup">QuidsUp</td><td><span class="license" data-i18n="license.gpl3">GNU General Public License v3.0</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- bigdargon -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts" target="_blank">https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.bigdargon">bigdargon</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- StevenBlack -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts" target="_blank">https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.stevenblack">StevenBlack</td><td><span class="license" data-i18n="license.mit">MIT License</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- urlhaus -->
+                <tr><td><a class="source-link" href="https://urlhaus.abuse.ch/downloads/hostfile/" target="_blank">https://urlhaus.abuse.ch/downloads/hostfile/</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.urlhaus">urlhaus Team</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- someonewhocares -->
+                <tr><td><a class="source-link" href="https://someonewhocares.org/hosts/zero/hosts" target="_blank">https://someonewhocares.org/hosts/zero/hosts</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.someonewhocares">someonewhocares</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+                <!-- Spam404 -->
+                <tr><td><a class="source-link" href="https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt" target="_blank">https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt</a></td><td><span class="badge-type">Hosts</span></td><td data-i18n="author.spam404">Spam404</td><td><span class="license" data-i18n="license.unknown">No or Unknown</span></td><td><span class="comment-placeholder" data-i18n="comment.dash">—</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-note">
+        <div data-i18n="footer.text">📋 Generated from <strong>GitHub Markdown tables</strong> · Original categories and license statements preserved · Click links to access rule sources</div>
+        <div class="stats">
+            <span data-i18n="footer.stats.categories">⚙️ 4 categories</span>
+            <span data-i18n="footer.stats.entries">📄 39 entries total</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ===== 语言翻译 =====
+        const translations = {
+            en: {
+                'title': 'Ad Blocking Rules List · Consolidated',
+                'subtitle': 'Converted from GitHub Markdown · Includes Lite / Normal / Plus / DNS categories',
+                'warning': '<strong>Some information may be outdated</strong> — Rule links, licenses, or maintenance status should be verified at each repository.',
+                'table.header.source': '📌 List Source',
+                'table.header.type': '🔖 Type',
+                'table.header.author': '👤 Author',
+                'table.header.license': '⚖️ License',
+                'table.header.notes': '      ',
+                'group.lite': '⚡ Lite Basic Filtering',
+                'group.normal': '🌀 Normal (Extended from Lite)',
+                'group.plus': '⚙️ Plus (Enhanced from Normal)',
+                'group.dns': '🌐 DNS (Content‑based / Hosts)',
+                'author.xinggsf': 'xinggsf',
+                'author.damengzhu': 'damengzhu',
+                'author.noyllopa': 'Noyllopa',
+                'author.adguard': 'AdGuard Team',
+                'author.cjx82630': 'cjx82630',
+                'author.reek': 'reek',
+                'author.easylist': 'EasyList',
+                'author.abp': 'Adblock Plus Team',
+                'author.dandelion': 'DandelionSprout',
+                'author.ublock': 'uBlock Team',
+                'author.ultimate': 'ultimate Team',
+                'author.fanboy': 'Fanboy Team',
+                'author.banbendalao': 'Banbendalao',
+                'author.hoshsadiq': 'hoshsadiq',
+                'author.durablenapkin': 'durablenapkin',
+                'author.d3ward': 'd3ward',
+                'author.adaway': 'Adaway Team',
+                'author.jdlingyu': 'jdlingyu',
+                'author.crazymax': 'crazy-max',
+                'author.quidsup': 'QuidsUp',
+                'author.bigdargon': 'bigdargon',
+                'author.stevenblack': 'StevenBlack',
+                'author.urlhaus': 'urlhaus Team',
+                'author.someonewhocares': 'someonewhocares',
+                'author.spam404': 'Spam404',
+                'license.unknown': 'No or Unknown',
+                'license.mit': 'MIT License',
+                'license.gpl3': 'GPL-3.0 license',
+                'license.lgpl3': 'LGPL-3.0 license',
+                'license.ccbysa4': 'CC BY-SA 4.0 license',
+                'license.easylist': 'EasyList Licence',
+                'license.dandelion': "DandelionSprout's Licence",
+                'license.gpl3ccby': 'GNU GPLv3 / CC BY 3.0',
+                'license.ccbyncsa': 'CC BY-NC-SA',
+                'license.ccby3': 'CC Attribution 3.0',
+                'comment.dash': '—',
+                'footer.text': '📋 Generated from <strong>GitHub Markdown tables</strong> · Original categories and license statements preserved · Click links to access rule sources',
+                'footer.stats.categories': '⚙️ 4 categories',
+                'footer.stats.entries': '📄 39 entries total'
+            },
+            zh: {
+                'title': '广告过滤规则列表 · 整合表',
+                'subtitle': '从 GitHub Markdown 转换 · 包含 Lite / Normal / Plus / DNS 分类',
+                'warning': '<strong>部分信息可能已过时</strong> — 规则链接、许可证或维护状态请以各仓库为准。',
+                'table.header.source': '📌 列表源 (List Source)',
+                'table.header.type': '🔖 类型',
+                'table.header.author': '👤 作者',
+                'table.header.license': '⚖️ 许可证',
+                'table.header.notes': '      ',
+                'group.lite': '⚡ Lite 基础过滤',
+                'group.normal': '🌀 Normal (基于 Lite 扩展)',
+                'group.plus': '⚙️ Plus (基于 Normal 增强)',
+                'group.dns': '🌐 DNS (基于内容过滤 / Hosts)',
+                'author.xinggsf': 'xinggsf',
+                'author.damengzhu': 'damengzhu',
+                'author.noyllopa': 'Noyllopa',
+                'author.adguard': 'AdGuard 团队',
+                'author.cjx82630': 'cjx82630',
+                'author.reek': 'reek',
+                'author.easylist': 'EasyList',
+                'author.abp': 'Adblock Plus 团队',
+                'author.dandelion': 'DandelionSprout',
+                'author.ublock': 'uBlock 团队',
+                'author.ultimate': 'ultimate 团队',
+                'author.fanboy': 'Fanboy 团队',
+                'author.banbendalao': 'Banbendalao',
+                'author.hoshsadiq': 'hoshsadiq',
+                'author.durablenapkin': 'durablenapkin',
+                'author.d3ward': 'd3ward',
+                'author.adaway': 'Adaway 团队',
+                'author.jdlingyu': 'jdlingyu',
+                'author.crazymax': 'crazy-max',
+                'author.quidsup': 'QuidsUp',
+                'author.bigdargon': 'bigdargon',
+                'author.stevenblack': 'StevenBlack',
+                'author.urlhaus': 'urlhaus 团队',
+                'author.someonewhocares': 'someonewhocares',
+                'author.spam404': 'Spam404',
+                'license.unknown': '无或未知',
+                'license.mit': 'MIT 许可证',
+                'license.gpl3': 'GPL-3.0 许可证',
+                'license.lgpl3': 'LGPL-3.0 许可证',
+                'license.ccbysa4': 'CC BY-SA 4.0 许可证',
+                'license.easylist': 'EasyList 许可证',
+                'license.dandelion': 'DandelionSprout 许可证',
+                'license.gpl3ccby': 'GNU GPLv3 / CC BY 3.0',
+                'license.ccbyncsa': 'CC BY-NC-SA',
+                'license.ccby3': 'CC Attribution 3.0',
+                'comment.dash': '—',
+                'footer.text': '📋 基于 <strong>GitHub Markdown 表格</strong> 生成 · 保留原始分类与许可声明 · 点击链接可直接访问规则源',
+                'footer.stats.categories': '⚙️ 4 个类别',
+                'footer.stats.entries': '📄 共计 39 个条目'
+            }
+        };
+
+        // ===== DOM =====
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeLabel = document.getElementById('theme-label');
+        const langToggle = document.getElementById('lang-toggle');
+        const langLabel = document.getElementById('lang-label');
+
+        // ===== 主题管理（带正确图标） =====
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                // 月亮图标（深色模式显示，点击可切回浅色）
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('adrules-theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                // 太阳图标（浅色模式显示，点击可切深色）
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('adrules-theme', 'light');
+            }
+        }
+
+        // 初始化
+        const storedTheme = localStorage.getItem('adrules-theme');
+        if (storedTheme) {
+            setTheme(storedTheme);
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(prefersDark ? 'dark' : 'light');
+        }
+
+        themeToggle.addEventListener('click', function() {
+            const isDark = body.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        // ===== 语言管理 =====
+        let currentLang = 'en';
+
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            if (!t) return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t.hasOwnProperty(key)) {
+                    if (key === 'warning' || key === 'footer.text') {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            langLabel.textContent = lang === 'en' ? 'English' : '中文';
+            document.documentElement.lang = lang;
+            currentLang = lang;
+            localStorage.setItem('adrules-lang', lang);
+        }
+
+        langToggle.addEventListener('click', function() {
+            const next = currentLang === 'en' ? 'zh' : 'en';
+            applyLanguage(next);
+        });
+
+        const storedLang = localStorage.getItem('adrules-lang');
+        const initialLang = (storedLang === 'en' || storedLang === 'zh') ? storedLang : 'en';
+        applyLanguage(initialLang);
+    });
+</script>
+</body>
+</html>
