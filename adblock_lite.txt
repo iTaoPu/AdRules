@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-15 13:40:06(GMT+8)
-! Total count: 39494
+! Version: 2026-11-15 23:30:01(GMT+8)
+! Total count: 39500
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -18911,6 +18911,7 @@ zzzyk.com###Tinfo
 ||0v0qj9fnwf.top^
 ||0vidads.top^
 ||0vpekhux1f.com^
+||0vtqrw86o.com^
 ||0wk6gdkg8r.com^
 ||0wpfe0duo.com^
 ||0x79jjyph7.com^
@@ -20364,6 +20365,7 @@ zzzyk.com###Tinfo
 ||7mxn77h4vr.com^
 ||7na721c64.com^
 ||7nb71ub2xi.com^
+||7nwt5qq78.com^
 ||7oavaac8i.com^
 ||7p5ruxflv0.com^
 ||7pe17z68y.com^
@@ -29257,6 +29259,7 @@ zzzyk.com###Tinfo
 ||jnlc.com/www/fund/newsmarket
 ||jnlenb.icu^
 ||jnmascx.xyz^
+||jnno9y1a9.com^
 ||jnp0kmm.icu^
 ||jntmwrm.com^
 ||jnwpzq.com^
@@ -33603,6 +33606,7 @@ zzzyk.com###Tinfo
 ||r3sub.com/posters/00698128.jpg
 ||r40xff8q48.com^
 ||r44r4l5na1.com^
+||r45jho6ug.com^
 ||r4uws5iu3g.com^
 ||r528e.cn^$3p
 ||r5dfwjtb.icu^
@@ -38320,6 +38324,7 @@ zzzyk.com###Tinfo
 ||xryrylt.cn^
 ||xs.dmzj.com^
 ||xs.houyi.baofeng.net^
+||xs27ycutl.com^
 ||xs8.cn/qreport?
 ||xsbiquge.la/js/detail.js
 ||xscp0*xq.com^$script,3p,xhr
@@ -38910,6 +38915,7 @@ zzzyk.com###Tinfo
 ||z2ke56999.com^
 ||z2ubj8bpk.com^
 ||z2uyyp069d.com^
+||z3vkcnj9f.com^
 ||z3yfkdjd.icu^
 ||z4a.net^$domain=aotu43.com|9xav.cc
 ||z4tnhm97b.com^
