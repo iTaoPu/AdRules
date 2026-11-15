@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-15 04:31:56(GMT+8)
-! Total count: 39490
+! Version: 2026-11-15 13:40:06(GMT+8)
+! Total count: 39494
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -20068,6 +20068,7 @@ zzzyk.com###Tinfo
 ||5p35xkp1p.com^
 ||5p478n58i9.com^
 ||5qnyx6k5w.com^
+||5qpogztzt.com^
 ||5s98.com/img/
 ||5sghirlr5b.com^
 ||5t5z6augl3.com^
@@ -25895,6 +25896,7 @@ zzzyk.com###Tinfo
 ||extancecompert.com^
 ||extensiondirectnesspassive.com^
 ||extmaps-api.yandex.net^
+||extraction14.com^
 ||extractobservation.com^
 ||extralocker.com^
 ||extramonies.com^
@@ -30629,6 +30631,7 @@ zzzyk.com###Tinfo
 ||lwfdlv.icu^
 ||lwide.xyz^
 ||lwksxs.com^
+||lwlqblkcucbrjy.com^
 ||lwlqsgr.cn^
 ||lwlwlw.com/ggzx/
 ||lwlwlw.com/js/FVgg.js
@@ -36806,6 +36809,7 @@ zzzyk.com###Tinfo
 ||uwgnpkd.cn^
 ||uwnvcxb.cn^
 ||uwxez.com^
+||uxawyas.com^
 ||uxb030ku4s.com^
 ||uxbd4id.xyz^
 ||uxcnhsf.cn^
