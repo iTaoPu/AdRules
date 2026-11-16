@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-16 04:55:26(GMT+8)
-! Total count: 39500
+! Version: 2026-11-16 13:40:16(GMT+8)
+! Total count: 39503
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -20158,6 +20158,7 @@ zzzyk.com###Tinfo
 ||6726lmym.top^
 ||6789.net^$3p
 ||67qlvj0jcj.com^
+||681znub3xp.com^
 ||6820tp1.com^
 ||68287zubo85737.com^
 ||68710266.com^
@@ -24860,6 +24861,7 @@ zzzyk.com###Tinfo
 ||dividend56.top^
 ||divinepiglet.com/session/$domain=index.hr
 ||divinepiglet.com^
+||divisible26.com^
 ||division43.top^
 ||dixbvzvuzhvxbg.com^
 ||diyibanzhu*.com/js/cdn.
@@ -28950,6 +28952,7 @@ zzzyk.com###Tinfo
 ||iyhaatedew.com^
 ||iyingdi.com/goood?
 ||iyinghua.io/bar/
+||iytnwiw0e1.com^
 ||iytrn.xyz^
 ||iyuedu.cn.com^
 ||iyxdm.*/js/gad_
