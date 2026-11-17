@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-17 02:09:33(GMT+8)
-! Total count: 39523
+! Version: 2026-11-17 15:17:22(GMT+8)
+! Total count: 39528
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -19257,6 +19257,7 @@ zzzyk.com###Tinfo
 ||1mb71rr5oo.com^
 ||1n4vrzxdms.com^
 ||1nevsf92q.com^
+||1nqv0i1kk.com^
 ||1nrgur4y43.com^
 ||1nvnkyg65.com^
 ||1nvxl968le.com^
@@ -23863,6 +23864,7 @@ zzzyk.com###Tinfo
 ||compass12.top^
 ||compiledoctor.com^
 ||compilework.com^
+||complement88.com^
 ||completiondistant.com^
 ||complexpixel.com^
 ||compoerhayz.com^
@@ -25616,6 +25618,7 @@ zzzyk.com###Tinfo
 ||enigmaprint.com^
 ||enigmaticcanyon.com^
 ||enigmaticvoyage.com^
+||enjihdh0t.com^
 ||enl2.96845.com^
 ||enolasepunily.com^
 ||enormousearth.com^
@@ -38359,6 +38362,7 @@ zzzyk.com###Tinfo
 ||xscp03121xq.com^
 ||xscp03130xq.com^
 ||xscp03131xq.com^
+||xsdnb.com^
 ||xsjh001.xyz^
 ||xslca.cc/js/pf.js
 ||xspxdhkcaplhza.com^
@@ -39389,6 +39393,7 @@ zzzyk.com###Tinfo
 ||zrljzgs.xyz^
 ||zrosq6dsha.com^
 ||zrz0c0sh7e.com^
+||zs68h9vow.com^
 ||zsdrjjcqutdnja.com^
 ||zsi24utdu.com^
 ||zsjjob.com/user/member/google.htm
