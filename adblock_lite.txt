@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-19 14:43:47(GMT+8)
-! Total count: 39823
+! Version: 2026-11-20 01:12:30(GMT+8)
+! Total count: 39849
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -1602,6 +1602,7 @@ $websocket,domain=wap.yushuwu.cloud
 *$script,xhr,image,3p,domain=360lele.cc|fxshu.top
 *$xhr,denyallow=ddxsmf.com|apps.bdimg.com|cdnsrc.asp.net,domain=ddxsmf.com
 *.lijie.*/*_*?$third-party
+*/__assets/homad/$xmlhttprequest,rewrite=abp-resource:blank-text,domain=gala.de|essen-und-trinken.de|eltern.de
 */blsx_*_*_*?*$third-party
 */larkf?id=*$domain=animeunity.cc
 ,e8o,$xmlhttprequest,domain=ahaonline.cz|info.cz|onetv.cz
@@ -3002,8 +3003,9 @@ $websocket,domain=wap.yushuwu.cloud
 131458.com##.divGuanggao
 131458.com##.ulfooter_top
 1314gl.com##a[href*=".apkpackagesys.com/"]
-1337x.*#$#abort-on-property-write window.onload false
+1337x.*#$#abort-on-property-write window.onload false;
 1337x.*,himovies.*,komikav.com,limetorrents.lol,manhuascan.com,moviesda1.com,moviesjoy.*,realgfporn.com,soap2day.*,strikeout.cc,sxyprn.*,theflixertv.*,thepiratebay10.xyz#$#abort-current-inline-script document.createElement script
+1337x.*,pornsub.cc#$#prevent-listener /click|blur/ handlePopunder
 137.175.73.220##a[target="_blank"][rel="nofollow"] > img
 1377x.*,123moviesfree.*,1flix.*,bigclatterhomesguideservice.com,camslib.com,camwhores.*,callistanise.com,cucuflix.*,doood.*,dooodster.*,dramacool.sr,embdmstrplayer.com,gogoanimes.*,hltv.org,igetintopc.com,japscan.me,jasminetesttry.com,l1afav.*,maxfinishseveral.com,minochinos.com,miraculous.to,movies-watch.com.pk,moviesapi.*,myflixerzz.*,nosteam.ro,primewire.*,ployan.*,readcomiconline.li,reputationsheriffkennethsand.com,root-nation.com,putarvid.com,tpead.net,seaporn.org,sfile.mobi,soap2day.*,solarmovie.*,toongod.*,usersdrive.com,vid2faf.*,vidara.*,vidfast.*,vidlink.*,vidsrc.*,watchflix.*,watchseriestv.*,yomovies.*#$#abort-on-property-read window.open
 13tv.top,freehao123.com##.box
@@ -7997,6 +7999,8 @@ chineseinla.com##.deal_discount
 chineseinla.com##.forum_banner_ads
 chineseinla.com##.text-ads-col
 chineseinla.com##div[style^="position:absolute;"][style$=":0px;top:30px;"]
+chip.de,focus.de#$#json-override 'showAdLoading enableHomadDesktop' false adWaterfallSettings
+chip.de,focus.de,golem.de#$#replace-xhr-response 'jsonpath($.enabled)' false /force_disabled|testadtags/
 chiphell.com###diy2 + div
 chipinfo.pro###content-container > div[style^="position: fixed;"]
 chjtx.com,fooish.com###ad
@@ -8634,6 +8638,7 @@ dataguru.cn###bg
 dataguru.cn###popDiv
 datanodes.to##body > form[method="POST"][target="_blank"] {remove:true;}
 datanodes.to#$#hide-if-matches-xpath './/a[@rel][@target="_blank"]/img[@alt="Watch Movie"][@style]/ancestor-or-self::div[1]'
+datavaults.co,fuckingfast.*,uploadrar.com,multiup.io#$#abort-current-inline-script document.defaultView.atob ''
 dav01.com##.adwraper
 daweijita.com##.sidebar-right > .widget-box:first-child
 dayanzai.me##.at1
@@ -9190,7 +9195,7 @@ easylearn.baidu.com##.vip-banner-cont
 easylife.tw,ettoday.net##.idleAd
 easylife.tw,ez3c.tw,softwarebrother.com##.popup_bottom_block
 easyvidplayer.com#$#prevent-listener click /(popunder)|(openPopunder)|(adId)/; abort-on-property-read window.open; abort-on-property-read cache_loader;
-ebay.*#$#hide-if-contains-visible-text 'Sponsored' div.x-evo-middle-river section[data-viewport]
+ebay.*#$#hide-if-contains-visible-text 'Sponsored' 'div.x-evo-middle-river section[data-viewport]'
 ebay.*#$#hide-if-contains-visible-text /(S*p*o*n*s*o*r*e*d|A*n*z*e*i*g*e|S*p*o*n*s*o*r*i*s*é|P*a*t*r*o*c*i*n*a*d*o|S*p*o*n*s*o*r*i*z*z*a*t*o)/ 'div[class="brwrvr__item-card__body"]' 'span[class="su-sponsored-label__sep"] > span[aria-labelledby]';
 ebay.*#$#hide-if-contains-visible-text /(Sponsored|Anzeige|Sponsorisé|Commandité|Patrocinado|Sponsorizzato)/ 'div[id^="placement"]' 'div[id^="placement"] button'
 ebay.*#$#hide-if-contains-visible-text /(Sponsored|Anzeige|Sponsorisé|Commandité|Sponsorowane|Gesponsord|Patrocinado|Sponsorizzato|贊助)/ 'div[class][data-testid] div[id^="placement"]' 'div ^^sh^^ *[role^="text"]'; hide-if-contains-visible-text /(Sponsored|Anzeige|Sponsorisé|Commandité|Sponsorowane|Gesponsord|Patrocinado|Sponsorizzato|贊助)/ 'div[class][data-testid] div[id^="placement"] ^^sh^^ > div' 'div ^^sh^^ *[role^="text"]'; hide-if-contains-visible-text /(Sponsored|Anzeige|Sponsorisé|Commandité|Sponsorowane|Gesponsord|Patrocinado|Sponsorizzato|贊助)/ 'div[class][data-testid] div[id^="placement"][style] ^^sh^^ *' 'div ^^sh^^ *';
@@ -11371,6 +11376,7 @@ igo99.cn##.adBG
 igorchernomoretz.com##body > div[id^="ab"]
 igorchernomoretz.com##body > div[id^="ab"] + div[style*="cursor"]
 igorslab.de##.ilab-adblocker-notice
+igromania.ru#$#json-prune results.fixed
 igroutka.ru#$#override-property-read Object.prototype.afg true
 iguarras.com,iputitas.net,ytanime.tv#$#abort-on-property-read afScript
 igxe.cn##.lion-flexd
@@ -15077,7 +15083,6 @@ pornnungxxx2.me,nungxthai.me,xxxdee.me,xxxnung.tv,i69xx.me,nungxxx.net,nungxxx2.
 pornnungxxx2.me,nungxthai.me,xxxdee.me,xxxnung.tv,i69xx.me,nungxxx.net,nungxxx2.com#$#timer-override 0 playlistNext '' timeout
 pornproxy.*#$#abort-current-inline-script document.createElement /script/; abort-on-property-write PopCookieTimeout; abort-on-property-read PopURL
 pornstarsyfamosas.es#$#abort-on-property-write _pop
-pornsub.cc#$#prevent-listener /click|blur/ handlePopunder
 porntrex.*#$#override-property-read flashvars.adv_pre_vast undefined; override-property-read flashvars.adv_post_vast undefined
 porntrex.com#$#abort-on-property-write preventDefault
 pornwhite.com###pre-spots
@@ -15592,7 +15597,7 @@ root-nation.com#$#abort-on-property-read RNRRM
 root-nation.com#$#hide-if-matches-xpath './/img[contains(@alt,"")]/parent::div[@class="backstretch"]//ancestor-or-self::img[1]'
 root-nation.com#$#hide-if-matches-xpath '//source/following::img[@src]/ancestor::a[@class]/ancestor-or-self::div[@id="tdi_29"]'
 rootz.so#$#prevent-listener click preventDefault; abort-on-property-read window.open
-rophimz.ac,motphimz.to,phimmoic.vc#$#prevent-listener click ads
+rophimz.ws,motphimz.to,phimmoic.vc#$#prevent-listener click ads
 rou.video##.grid > div[class^="col-span"]:has(> div[class] > div[id^="ts_ad_native"])
 rou.video##.grid > div[class^="col-span"]:has(> div[class] > ins)
 rouman5.com###headlessui-portal-root
@@ -15682,11 +15687,12 @@ saohgdasregions.fun#$#abort-current-inline-script document.createElement 'delete
 sasadown.cn,ydwgame.net###float_mask
 sat24.com#$#abort-on-property-write YXNfZXNzZW50aWFsc2F0MjQuY29t; abort-on-property-write YXNfZXNzZW50aWFsd3d3LnNhdDI0LmNvbQ
 sat24.com#$#event-override message rewrite /_as_res/ data /_as_req$/ _as_res
-sat24.com#$#replace-outbound-value Array.prototype.join '/^(x[a-z0-9]{8,}[(][)];)[(]async(?:[]function[(][)]|[(][)]=>)[{](?=.*report\\.error-report\\.com\\/modal)/' '$1(async()=>{return;'
+sat24.com#$#replace-outbound-value Array.prototype.join '/^(x[a-z0-9]{8,}[(][)].)[(]async(?:[]function[(][)]|[(][)]=>)[{](?=.*report[.]error-report[.]com[/]modal)/' '$1(async()=>{})||(async()=>{'
 satkurier.pl#$#prevent-listener message /data===/
 sauto.cz#$#override-property-read sssp undefined
 savevideo.me##div[id^="ads_notice_"]
 savevideo.me##td > div[class]:not([id])[style*="important"]
+savvytime.com,index.hr,uppercutmma.com,makeitmeme.com#$#replace-outbound-value Array.prototype.join '/if[(]!([A-Za-z_$][A-Za-z0-9_$]*[(]t,e,[A-Za-z_$][A-Za-z0-9_$]*[)][)]return;)/' 'if( $1'
 sblunwen.com###popupService
 sblunwen.com##.c11
 sc115.com##script + a
@@ -16568,6 +16574,7 @@ szxx.com.cn###A0
 szxx.com.cn###A1
 szxx.com.cn###A2
 szxx.com.cn#@##divAd
+t-online.de#$#skip-video 'video:has(> source[src*="hmediacdn.com"])' '//video[source[contains(@src,"hmediacdn.com")]]' -skip-to:0
 t.cj.sina.com.cn###sina-cont000
 t.cj.sina.com.cn##.yyy-wrap-2021
 t.qq.com###homeBannerNew
@@ -16927,7 +16934,7 @@ topcinema.*,topcinemaa.*#$#abort-on-property-write zfgformats; abort-on-property
 topcraft.ru##.ad-info
 topfilmz.com#@##adsense
 topflix.fm#$#abort-current-inline-script String.fromCharCode XMLHttpRequest
-tophim.pro#$#prevent-listener click pop
+tophim.fit#$#prevent-listener click pop
 tophub.today##.ax
 topwwnews.com#$#abort-on-property-read localStorage
 torkitty.*#$#prevent-listener click handlePopunder
@@ -17614,7 +17621,7 @@ weeronline.nl#$#event-override message rewrite /_as_res/ data /_as_req$/ _as_res
 weeronline.nl#$#json-override isActive false applyRatio
 weeronline.nl#$#json-override isActive false eventSampleRatio
 weeronline.nl#$#json-override isActive false hasActiveAutoRecovery
-weeronline.nl#$#replace-outbound-value Array.prototype.join '/^(x[a-z0-9]{8,}[(][)];)[(]async(?:[]function[(][)]|[(][)]=>)[{](?=.*report\\.error-report\\.com\\/modal)/' '$1(async()=>{return;'
+weeronline.nl#$#replace-outbound-value Array.prototype.join '/^(x[a-z0-9]{8,}[(][)].)[(]async(?:[]function[(][)]|[(][)]=>)[{](?=.*report[.]error-report[.]com[/]modal)/' '$1(async()=>{})||(async()=>{'
 weerplaza.nl#$#replace-argument Element.prototype.setAttribute 1 '/[\\s\\S]*(error-report|new Promise|;await new|:\\[?window|&&window,|void 0\\]|location\\.href|void 0\\|\\|window|,window,|void 0,window|,window\\]|\\)\\.join\\(String\\.fromCharCode|adShieldError)[\\s\\S]*/' ''
 weibo.com###pl_common_ali
 weibo.com##.UG_bn_a
@@ -17800,6 +17807,8 @@ wnacg05.cc##+js(abort-current-script, Math.floor, tips)
 wnflb2023.com##.GzList
 woaimoon.com##div[id^="juan_"]
 woego.cn#@##topAds
+wolt.com#$#hide-if-contains-visible-text '/^(Sponsored|Sponsorisé|Reklam|Sponsoreret|Gesponsert|Sponsoreeritud|Sponzorirano|Жарнама|Sponsorēts|Remiama|Szponzorált|Sponsorowane|Sponset|Sponsorizat|Sponsorizuar|Sponzorované|Sponzorisano|Sponsoroitu|Sponsrad|Sponsorlu|Kostað|Χορηγούμενο|Спонзорирано|Реклама|Спонсоровані|ממומן|خاضع للرعاية|დასპონსორებული)$/' 'section[data-test-id="MainDiscoveryContent"] > div > div' 'button[data-test-id="carousel-header-image-title-see-all-button"] + button'
+wolt.com#$#hide-if-contains-visible-text '/^(Sponsored|Sponsorisé|Reklam|Sponsoreret|Gesponsert|Sponsoreeritud|Sponzorirano|Жарнама|Sponsorēts|Remiama|Szponzorált|Sponsorowane|Sponset|Sponsorizat|Sponsorizuar|Sponzorované|Sponzorisano|Sponsoroitu|Sponsrad|Sponsorlu|Kostað|Χορηγούμενο|Спонзорирано|Реклама|Спонсоровані|ממומן|خاضع للرعاية|დასპონსორებული)$/' li 'li button'
 woman.tvbs.com.tw##section[aria-label*="advertise"]
 woniupai.net##.wnp-adbox
 woolworths.com.au#$#hide-if-contains-visible-text /\\s*Promoted\\s*/ 'div .ng-star-inserted wc-product-tile' 'wc-product-tile ^^sh^^ div.sponsored-text'
@@ -17861,7 +17870,6 @@ www.dbbqb.com##.MuiPaper-root
 www.diendancauduong.com#$#abort-on-property-read antiAdBlockerHandler
 www.duba.com##.tiyan_a
 www.elektroda.pl#$#abort-on-property-read popupStatus; abort-on-property-write welcomeAdContainer
-www.facebook.com#$#json-override 'jsonpath($..[?(@.node.__typename=="MarketplaceFeedAdStory")].node)' null '' /MarketplaceFeedAdStory/
 www.facebook.com,web.facebook.com##div[aria-posinset] a[href="#"] span[style*="absolute"]
 www.facebook.com,web.facebook.com##div[aria-posinset] a[href^="?"] span[style*="absolute"]
 www.facebook.com,web.facebook.com#$#hide-if-contains '/(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)/' 'div[aria-posinset]' 'div[aria-posinset] use^^svg^^'
@@ -17875,15 +17883,16 @@ www.facebook.com,web.facebook.com#$#hide-if-matches-xpath './/div[@aria-labelled
 www.facebook.com,web.facebook.com#$#hide-if-matches-xpath './/div[@role="complementary"]//a[contains(@rel,"nofollow")]//img[@*[starts-with(name(),"data-") and translate(.,"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","")="" and string-length(translate(.,"abcdefghijklmnopqrstuvwxyz",""))=1 and contains("abcdefghijklmnopqrstuvwxyz",substring(.,1,1)) and contains("abcdefghijklmnopqrstuvwxyz",substring(.,string-length(.),1))]]/ancestor-or-self::div[contains(@class,"x1n2onr6")][2]/parent::div[1]/..'
 www.facebook.com,web.facebook.com#$#hide-if-matches-xpath './/div[@role="feed"]//div[@role="article"]//a[@aria-label[.="Patrocinado" or .="Sponsa" or .="Bersponsor" or .="Commandité" or .="Ditaja" or .="Gesponsert" or .="Gesponsord" or .="Sponsrad" or .="Publicidad" or .="Sponsoreret" or .="Sponset" or .="Sponsored" or .="Sponsorisé" or .="Sponsorizat" or .="Sponsorizzato" or .="Anzeige" or .="Sponsorlu" or .="Sponsorowane" or .="Реклама" or .="ממומן" or .="تمويل شوي" or .="دارای پشتیبانی مالی" or .="سپانسرڈ" or .="مُموَّل" or .="प्रायोजित" or .="সৌজন্যে" or .="ได้รับการสนับสนุน" or .="内容" or .="贊助" or .="Sponsoroitu" or .="May Sponsor" or .="Được tài trợ" or .="ಪ್ರಾಯೋಜಿತ" or .="स्पॉन्सर्ड" or .="広告" or .="赞助内容" or .="Рэклама" or .="Sponzorované" or .="La maalgeliyey" or .="Geborg" or .="Reklam" or .="Plaćeni oglas" or .="광고" or .="Χορηγούμενη" or .="স্পনসর্ড" or .="സ്പോൺസർ ചെയ്തത്" or .="ਸਰਪ੍ਰਸਤੀ ਪ੍ਰਾਪਤ" or .="මුදල් ගෙවා ප්‍රචාරය කරන ලදි" or .="விளம்பரம்" or .="ప్రాయోజితం చేయబడింది" or .="Спонсорирано" or .="Спонзорисано" or .="ܒܘܕܩܐ ܡܡܘܘܢܐ" or .="Reklamo" or .="Hirdetés" or .="Sponsitud" or .="Sponzorováno"]]/ancestor::div[@role="article"]'
 www.facebook.com,web.facebook.com#$#hide-if-matches-xpath './/object[@type="nested/pressable"]/a[@role="link"]/span[contains("|Sponsoreret|Sponsrad|Patrocinado|Sponsa|Bersponsor|Commandité|Ditaja|Gesponsert|Gesponsord|Publicidad|Sponset|Sponsored|Sponsorisé|Sponsorizat|Sponsorizzato|Sponsorlu|Sponsorowane|Реклама|ממומן|تمويل شوي|دارای پشتیبانی مالی|سپانسرڈ|مُموَّل|प्रायोजित|সৌজন্যে|ได้รับการสนับสนุน|内容|贊助|Sponsoroitu|May Sponsor|Được tài trợ|", concat("|", text(), "|"))]/ancestor::span[2]'
-www.facebook.com,web.facebook.com#$#hide-if-matches-xpath '//div[contains(., "Ad") or contains(., "Patrocinado") or contains(., "Patrocinat") or contains(., "Bersponsor") or contains(., "Commandité") or contains(., "Ditaja") or contains(., "Gesponsert") or contains(., "Gesponsord") or contains(., "Sponsras") or contains(., "Publicidad") or contains(., "Sponsoreret") or contains(., "Sponsoreeritud") or contains(., "Sponset") or contains(., "Sponsored") or contains(., "Sponsorisé") or contains(., "Sponsorizat") or contains(., "Sponsorizzato") or contains(., "Anzeige") or contains(., "Sponsorlu") or contains(., "Sponsorowane") or contains(., "Реклама") or contains(., "ממומן") or contains(., "مُموَّلة") or contains(., "دارای پشتیبانی مالی") or contains(., "سپانسرڈ") or contains(., "مُموَّل") or contains(., "प्रায়োজিত") or contains(., "সৌজন্যে") or contains(., "ได้รับการสนับสนุน") or contains(., "内容") or contains(., "贊助") or contains(., "Sponsoroitu") or contains(., "May Sponsor") or contains(., "Được tài trợ") or contains(., "ಪ್ರಾಯೋಜಿತ") or contains(., "स्पॉन्सर्ड") or contains(., "広告") or contains(., "赞助内容") or contains(., "Рэклама") or contains(., "Sponzorirano") or contains(., "La maalgeliyey") or contains(., "Geborg") or contains(., "Reklam") or contains(., "Plaćeni oglas") or contains(., "광고") or contains(., "Χορηγούμενη") or contains(., "স্পনসর্ড") or contains(., "প্রায়োজিত") or contains(., "സ്പോൺസർ ചെയ്തത്") or contains(., "സ്പോൺസർചെയ്തത്") or contains(., "ਸਰਪ੍ਰਸਤੀ ਪ੍ਰาਪਤ") or contains(., "ਸਰਪ੍ਰਸਤੀਪ੍ਰਾਪਤ") or contains(., "මුදල් ගෙවා ප්රචාරය කරන ลදි") or contains(., "විළ]") or contains(., "Спонсорирано") or contains(., "Спонзорисано") or contains(., "ܒܘܕܩܐ ܡܡܘܘܢܐ") or contains(., "Reklamo") or contains(., "Hirdetés") or contains(., "Sponsitud") or contains(., "Sponzorováno") or contains(., "Apmaksāta reklāma") or contains(., "Urraithe") or contains(., "Kostað")][not(ancestor::div[@role="listitem"])]/ancestor::a[@href][@role="link"][@tabindex][1]/ancestor::div[2]/../parent::div/span' '//div[@role="main"]'
+www.facebook.com,web.facebook.com#$#hide-if-matches-xpath '//div[contains(., "Ad") or contains(., "Patrocinado") or contains(., "Patrocinat") or contains(., "Bersponsor") or contains(., "Commandité") or contains(., "Ditaja") or contains(., "Gesponsert") or contains(., "Gesponsord") or contains(., "Sponsras") or contains(., "Publicidad") or contains(., "Sponsoreret") or contains(., "Sponsoreeritud") or contains(., "Sponset") or contains(., "Sponsored") or contains(., "Sponsorisé") or contains(., "Sponsorizat") or contains(., "Sponsorizzato") or contains(., "Anzeige") or contains(., "Sponsorlu") or contains(., "Sponsorowane") or contains(., "Реклама") or contains(., "ממומן") or contains(., "مُموَّلة") or contains(., "دارای پشتیبانی مالی") or contains(., "سپانسرڈ") or contains(., "مُموَّل") or contains(., "प्रায়োজিত") or contains(., "সৌজন্যে") or contains(., "ได้รับการสนับสนุน") or contains(., "内容") or contains(., "贊助") or contains(., "Sponsoroitu") or contains(., "May Sponsor") or contains(., "Được tài trợ") or contains(., "ಪ್ರಾಯೋಜಿತ") or contains(., "स्पॉन्सर्ड") or contains(., "広告") or contains(., "赞助内容") or contains(., "Рэклама") or contains(., "Sponzorirano") or contains(., "La maalgeliyey") or contains(., "Geborg") or contains(., "Reklam") or contains(., "Plaćeni oglas") or contains(., "광고") or contains(., "Χορηγούμενη") or contains(., "স্পনসর্ড") or contains(., "প্রায়োজিত") or contains(., "സ്പോൺസർ ചെയ്തത്") or contains(., "സ്പോൺസർചെയ്തത്") or contains(., "ਸਰਪ੍ਰਸਤੀ ਪ੍ਰาਪਤ") or contains(., "ਸਰਪ੍ਰਸਤੀਪ੍ਰਾਪਤ") or contains(., "මුදල් ගෙවා ප්රචාරය කරන ลදි") or contains(., "විළ]") or contains(., "Спонсорирано") or contains(., "Спонзорисано") or contains(., "ܒܘܕܩܐ ܡܡܘܘܢܐ") or contains(., "Reklamo") or contains(., "Hirdetés") or contains(., "Sponsitud") or contains(., "Sponzorováno") or contains(., "Apmaksāta reklāma") or contains(., "Urraithe") or contains(., "Kostað")][not(ancestor::div[@role="listitem"])][ancestor::div[@role="main"]]/ancestor::a[@href][@role="link"][@tabindex][1]/ancestor::div[2]/../parent::div/span'
 www.facebook.com,web.facebook.com#$#hide-if-shadow-contains '/^(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)$/' 'div[aria-posinset]'
 www.facebook.com,web.facebook.com#$#hide-if-shadow-contains '/^[^A-Za-z0-9]*(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)[^A-Za-z0-9]*$/' 'div[aria-posinset]'
 www.facebook.com,web.facebook.com#$#json-override 'jsonpath($.*.data.node)' null '' '/^(?!.* {64}).*(?:CometStorySponsoredLabelStrategy|"th_dat_spo":\{)/'
+www.facebook.com,web.facebook.com#$#json-override 'jsonpath($.*.data.node)' null '' '/^(?!.*\\s{64}).*(?:CometStorySponsoredLabelStrategy|"th_dat_spo":\{)/'
 www.facebook.com,web.facebook.com#$#json-override 'jsonpath($..__bbox.result.data.node)' null '' '/^(?!.* {64}).*(?:CometStorySponsoredLabelStrategy|"th_dat_spo":\{)/'
+www.facebook.com,web.facebook.com#$#json-override 'jsonpath($..__bbox.result.data.node)' null '' '/^(?!.*\\s{64}).*(?:CometStorySponsoredLabelStrategy|"th_dat_spo":\{)/'
 www.facebook.com,web.facebook.com#$#json-override 'jsonpath($..auxColumnUnits.nodes)' emptyArray '' /AdsSideFeedUnit/
 www.facebook.com,web.facebook.com#$#json-override 'jsonpath($..instream_video_ad_breaks_comet)' null '' /"instream_video_ad_breaks_comet":\{/
 www.facebook.com,web.facebook.com#$#json-override 'jsonpath($..news_feed.edges[?(@.node.comet_sections.context_layout.story.comet_sections.metadata.0.__typename=="CometStorySponsoredLabelStrategy")].node)' null '' /CometStorySponsoredLabelStrategy/
-www.facebook.com,web.facebook.com#$#json-prune 'data.marketplace_home_feed.edges.[-].node.ad_id_string'; json-override 'jsonpath($.data.node)' null '' /ad_id_string/
 www.facebook.com,web.facebook.com#$#json-prune 'require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.node require.0.3.0.__bbox.require.[-].3.1.__bbox.result.data.node.story.sponsored_data.ad_id'
 www.facebook.com,web.facebook.com#$#override-property-read Env.xvsijlg4 false; override-property-read Env.qmzkvr8p false; override-property-read Env.x3m9kf2n false; override-property-read GHLDetectionUtilsPreludeSafe.isJSONParseShimmedImpl falseFunc;
 www.facebook.com,web.facebook.com#$#race start; hide-if-contains '/^(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)$/' 'div[aria-posinset]' 'div[aria-posinset] use^^svg^^use^^svg^^use^^svg^^'; hide-if-contains '/^(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)$/' 'div[aria-posinset]' 'div[aria-posinset] use^^svg^^use^^svg^^use^^svg^^use^^svg'; hide-if-contains '/^(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)$/' 'div[aria-posinset]' 'div[aria-posinset] use^^svg^^use^^svg^^use^^svg^^use^^svg^^use^^svg'; hide-if-contains '/^(?:Sponsored|Ad|Sponsorisé|Commandité|Patrocinado|Bersponsor|Sponsorizzato|Sponsorowane|Hirdetés|Được tài trợ)$/' 'div[aria-posinset]' 'div[aria-posinset] use^^svg^^use^^svg^^use^^svg^^use^^svg^^use^^svg^^use^^svg'; race stop;
@@ -18301,7 +18310,7 @@ yamol.tw##.panel[style="text-align:left;width:100%;padding:0px;background-color:
 yanaifei.net##.swiper-wrapper > .swiper-slide:has(> .banner[href^="https://"][target="_blank"]):remove()
 yandex.com#$#hide-if-contains ad li.serp-item 'li.serp-item div.label'
 yandex.com.tr#$#hide-if-contains reklam li.serp-item 'li.serp-item div.label'
-yanhh3d.blog,x.chinav.sex#$#abort-current-inline-script document.addEventListener opup
+yanhh3d.baby,x.chinav.sex#$#abort-current-inline-script document.addEventListener opup
 yantuchina.com##div[style="width:618px;height:150px;margin: 0 auto; display:block;"]
 yaofangwang.com##.bad
 yarik-sat.com##.noadb
@@ -21595,6 +21604,7 @@ zzzyk.com###Tinfo
 ||amusingengine.me^
 ||amusingstablegills.com^
 ||amvecurt.cn^
+||amwdbwjxxljpt.space^
 ||amwm.cn^
 ||amxwqv.com^
 ||amy.gs/Webservices/jsParseLinks.aspx$script,third-party
@@ -21868,7 +21878,6 @@ zzzyk.com###Tinfo
 ||aspiringtoy.com^
 ||aspku.com/images/vz360.jpg
 ||aspku.com/z/
-||aspshalers.com^
 ||aspwg.cn^
 ||asrxwyud2.com^
 ||asserts.avple.tv/file/avple-asserts/ad.js
@@ -22908,6 +22917,7 @@ zzzyk.com###Tinfo
 ||bruisebaseball.com^
 ||bruisedpaperworkmetre.com^
 ||brunchforher.com^
+||bryanyippie.com^
 ||bsanciv.top^
 ||bsbaswq.cn^
 ||bsdgjmy.com^
@@ -23453,7 +23463,6 @@ zzzyk.com###Tinfo
 ||celestialspectra.com^
 ||cengqinglin.cn^
 ||cenotessnawle.com^
-||centrefdop.com^
 ||centurys.net/promo_
 ||cenyou.net/wp-content/uploads/1200-200.
 ||ceremony79.com^
@@ -24939,7 +24948,6 @@ zzzyk.com###Tinfo
 ||dioimg.net/images/*.gif
 ||diouidlf98.com^
 ||diouy9cvtx.xyz^
-||diploiswhet.com^
 ||diplomahawaii.com^
 ||direfuldesk.com^
 ||dirgesimious.com^
@@ -26013,6 +26021,7 @@ zzzyk.com###Tinfo
 ||excelhome.net/js/banner-
 ||excellentbrass.com^
 ||excidesparers.com^
+||excitedloaf.com^
 ||excitedzone.com^
 ||excitingdates.com^
 ||excitingtub.com^
@@ -27065,6 +27074,7 @@ zzzyk.com###Tinfo
 ||giddycoat.com^
 ||gie0izinx.com^
 ||gifcdncn.trafficmanager.net^
+||giftcalyon.com^
 ||giftclothings.com^
 ||giftedbuffet.tech^
 ||gigglemagnetismunaired.com^
@@ -27682,7 +27692,6 @@ zzzyk.com###Tinfo
 ||hanjutv2020.com/statics/skin/*/js/plus.js
 ||hanjutvn.com/template/alifun/js/Tmall/
 ||hanlinzhijia.net^
-||hanseazido.com^
 ||hanwdsii.com^
 ||hanzidnbn.com^
 ||hanzify.*/Main/Template/Images/chinabank.gif
@@ -28686,6 +28695,7 @@ zzzyk.com###Tinfo
 ||ikafan.com/upload/image/iqiyi_
 ||ikaka.com/globalad/
 ||ikanbot.com/resources/common.js?v=$script
+||ikebanascapose.com^
 ||ikjwmfeds.xyz^
 ||ikkdm.com/mg/show2.js
 ||iklda.cn^
@@ -28826,6 +28836,7 @@ zzzyk.com###Tinfo
 ||immensehoney.com^
 ||immensehoof.com^
 ||imminentshake.com^
+||immixtgreige.cyou^
 ||immunity44.com^
 ||immunity95.com^
 ||imnks.com/ad2023/$image
@@ -30342,6 +30353,7 @@ zzzyk.com###Tinfo
 ||letvcdn.com/lc02_live/201803/18/23/40/1521387641261new.
 ||letvdbrwhbnhrs.com^
 ||leucosmutty.com^
+||leudsarriba.com^
 ||lewenma.com/js/read.js
 ||leyf5q4rk.com^
 ||lezbrja.cn^
@@ -30791,6 +30803,7 @@ zzzyk.com###Tinfo
 ||luciochen.cn^
 ||luckyorange.com^
 ||luckyshelf.com^
+||lucroustoxcatl.com^
 ||ludicrousarch.com^
 ||luluvdo.com/js/jdadbl.js
 ||lumbarssweepup.com^
@@ -31069,6 +31082,7 @@ zzzyk.com###Tinfo
 ||manmanju.com/mg/show*.js
 ||manqian.cn/784a6e27-be5b-4442-86e5-9f4adb51894d?
 ||manqian.cn/async/adLocationConfig
+||mantelsignore.com^
 ||mantrafox.com^
 ||manydiamonds.com^
 ||manyfishes.com^
@@ -31184,6 +31198,7 @@ zzzyk.com###Tinfo
 ||media-mediatemple.netdna-ssl.com/wp-content/themes/smashing-magazine/assets/js/blocked.min.js$script,domain=smashingmagazine.com
 ||media.cdn.kuwo.cn*tuijian*.json$app=cn.kuwo.player
 ||media.rencontreshard.com^$third-party,script
+||mediabuysolutions.com^
 ||medialsgleet.com^
 ||mediatescarf.com^
 ||mediav.com$third-party
@@ -31588,6 +31603,7 @@ zzzyk.com###Tinfo
 ||msg.ettoday.net^
 ||msg.iqiyi.com^
 ||msg.video.qiyi.com^
+||msg3zn5w9.com^
 ||msite.baidu.com^
 ||msn.ynet.com/c/tj_comm.js
 ||msn5vg8em.com^
@@ -31743,6 +31759,7 @@ zzzyk.com###Tinfo
 ||mzyfz.*/modules/46/
 ||mzzfree.com/file/upload/202109/14/180421861.gif
 ||mzzueflt.com^
+||n-tv.de/videoPlayer/homadClientConfig.json$xmlhttprequest,rewrite=abp-resource:blank-text,domain=n-tv.de
 ||n.baminw.com.cn^
 ||n.sinaimg.cn/sinakd10117/*/bd54-kentcvx6065228.png
 ||n01t94i6g.com^
@@ -32494,6 +32511,7 @@ zzzyk.com###Tinfo
 ||orbor700.com^
 ||orchidgenius.com^
 ||organic-package.com^
+||organygrabbed.com^
 ||orgbackups.com^
 ||orientedargument.com^
 ||originblocks.com^
@@ -32627,6 +32645,7 @@ zzzyk.com###Tinfo
 ||p2peye.com/ajax.php?mod=ad&
 ||p2peye.com/ajax.php?mod=advertisement&
 ||p3-be-pack-sign.pglstatp-toutiao.com^
+||p3bqgc0pi.com^
 ||p43c4oysmb.com^
 ||p4dc8ve6i.com^
 ||p4p.sina.com.cn^
@@ -33321,7 +33340,6 @@ zzzyk.com###Tinfo
 ||pugzutzi.com^
 ||puk9mpb8dm.com^
 ||pulfinik.com^
-||pulianyn.com^
 ||pulsaredit.com^
 ||pulsatingmeadow.com^
 ||puma.com^$popup,domain=hupu.com
@@ -33981,6 +33999,7 @@ zzzyk.com###Tinfo
 ||reek.github.io/anti-adblock-killer/k2Uw7isHrMm5JXP1Vwdxc567ZKc1aZ4I.js|$script
 ||referenceirresponsible.com^
 ||referentiel.nouvelobs.com/js/nobs;manifest-analytics.js$script
+||reffeltsurmit.com^
 ||reflection67.top^
 ||reflector19.com^
 ||reflectpaint.com^
@@ -35014,6 +35033,7 @@ zzzyk.com###Tinfo
 ||singtao.ca/editions/affiliate_
 ||sinkportal.com^
 ||sinolub.com/index.php?m=poster&
+||sireniaellipse.com^
 ||sirsplajp.com^
 ||sitcinchtoo.com^
 ||site-bk.oss-cn-shenzhen.aliyuncs.com/img/aliyun/
@@ -35102,6 +35122,7 @@ zzzyk.com###Tinfo
 ||smabye.com^
 ||smallershops.com^
 ||smallseotools.com/webimages/garamar*.png^$image,domain=smallseotools.com
+||smartclip.net/select$xmlhttprequest,rewrite=abp-resource:blank-html,domain=n-tv.de|gala.de|essen-und-trinken.de|brigitte.de|eltern.de
 ||smartmail.cyou^
 ||smartmuchang.com^
 ||smartnextusa.com^
@@ -35534,6 +35555,7 @@ zzzyk.com###Tinfo
 ||steadygarden.pro^
 ||stealsteel.com^
 ||steedbee.com^
+||steedlentor.com^
 ||steelcn.cn/img/bj_*_146_315.jpg
 ||steelmaiden.com^
 ||steepsister.com^
@@ -35696,6 +35718,7 @@ zzzyk.com###Tinfo
 ||suibianlu.com/zb_users/theme/tx_fzy/script/zhao.js
 ||suitcase890.top^
 ||suiyishop.cn/zhuangxiu_
+||sulafatmortals.com^
 ||sulkycook.com^
 ||sullowspatio.com^
 ||sultoneframer.com^
@@ -35805,6 +35828,7 @@ zzzyk.com###Tinfo
 ||symptom39.com^
 ||synacast.com^
 ||synapse22.net^
+||synaxisgesten.com^
 ||sync960.com^
 ||syncope12.top^
 ||syndication.exosrv.com/splash.php?$xhr,redirect=noop.txt,important,domain=hboav.com
@@ -35827,6 +35851,7 @@ zzzyk.com###Tinfo
 ||szgpmy.com/js/
 ||szhongzi.com/js/
 ||szhszxfw.cn^
+||szhtkldy4.com^
 ||szipkp.com^
 ||szjbo9a13.com^
 ||szjjzs.com/js/cs*.js
@@ -36210,7 +36235,6 @@ zzzyk.com###Tinfo
 ||tightrope23.com^
 ||tightsgustdeport.com^
 ||tiglicsethian.com^
-||tigpmt.com^
 ||tigronesizzles.com^
 ||tigtag.com/images/*1000x
 ||tigtag.com/images/pic1/
@@ -37777,6 +37801,7 @@ zzzyk.com###Tinfo
 ||wew56nanuc.com^
 ||wewlkq.com^
 ||wewubuwgz.com^
+||weznennuied.com^
 ||weznkotoko.com^
 ||wfiles.hcomic.net/indexSwiper/*_*x*_*_TC_gif.gif
 ||wfndponfd.com^
@@ -39775,6 +39800,7 @@ zzzyk.com###Tinfo
 ||zyifk.cn^
 ||zyjfjziavcdpnk.com^
 ||zykwnj.cn^
+||zymicweanie.com^
 ||zypzzv.xyz^
 ||zyrwfd.xyz^
 ||zyy25t69u.com^
