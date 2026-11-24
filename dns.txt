@@ -7,8 +7,8 @@
 ! Description: List for blocking ads in the Chinese region. Block Ads, Trackers, Malware, HTTPDNS, PCDN. 
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Update: 2026-11-24 12:55:36(GMT+8)
-! Total count: 214705
+! Update: 2026-11-24 13:11:18(GMT+8)
+! Total count: 214708
 /^.+stat\.kugou\.com/
 /^admarvel\./
 /^admaster\./
@@ -77912,6 +77912,7 @@
 ||hurtfulseries.com^
 ||hurtgrape.com^
 ||hurtsbehalf.com^
+||hurupjtqpngdm.website^
 ||husdv.sokolovelaw.com^
 ||husfly.com^
 ||hushclosing.com^
@@ -92946,6 +92947,7 @@
 ||lmhvhlxacgtmb.site^
 ||lmhx6w4tm.com^
 ||lmiatiqshwntg.space^
+||lmifiblkmsjzr.space^
 ||lmiudo.ginette-ny.com^
 ||lmjcooryceyse.site^
 ||lmjvywakjupgv.site^
@@ -125757,6 +125759,7 @@
 ||phspywijwvjc.com^
 ||phssl.svibe.com^
 ||phstjhaswpoea.site^
+||phsztcaprimpd.online^
 ||phtkc.patagoniaprovisions.com^
 ||phts.io^
 ||phuakravmo.in^
