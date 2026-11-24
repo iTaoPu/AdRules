@@ -22,77 +22,123 @@ jobs:
       actions: write
 
     steps:
-    - uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
-        # 强制在 script 分支上运行与构建
-        ref: script
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          # 强制在 script 分支上运行与构建
+          ref: script
 
-    - name: Setup Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.x'
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
 
-    - name: Update Upstream
-      continue-on-error: false
-      run: |
-        pip install requests
-        mkdir -p ./tmp
-        bash ./script/update_upstream.sh
-        tar -czvf archive.tar.gz -C ./tmp . || touch archive.tar.gz
+      - name: Update Upstream
+        continue-on-error: false
+        run: |
+          pip install requests
+          mkdir -p ./tmp
+          bash ./script/update_upstream.sh
+          tar -czvf archive.tar.gz -C ./tmp . || touch archive.tar.gz
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: archive.tar.gz
-        path: archive.tar.gz
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: archive.tar.gz
+          path: archive.tar.gz
 
-    - name: Build Rules
-      continue-on-error: false
-      run: |
-        bash ./script/update_content.sh
-        bash ./script/update_dns.sh
-        rm -f archive.tar.gz
+      - name: Build Rules
+        continue-on-error: false
+        run: |
+          bash ./script/update_content.sh
+          bash ./script/update_dns.sh
+          rm -f archive.tar.gz
 
-    - name: Update other rules
-      run: |
-        mkdir -p rules
-        cd rules
-        rm -f *.txt
-        wget -q https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt || echo "Download failed"
-        cd ../
+      - name: Build BlockAds DNS Rules
+        run: |
+          SRC_DNS="./dns.txt"
+          OUT_DNS="./blockads-dns.txt"
 
-    - name: Commit and Push rules to script branch
-      run: |
-        # 1. 获取当前时间标签
-        CURRENT_TIME=$(TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S")
+          if [ -f "$SRC_DNS" ]; then
+            python3 - <<'EOF'
+          import re
 
-        # 2. 配置 Git 身份
-        git config --local user.name "actions"
-        git config --local user.email "action@github.com"
+          src = "./dns.txt"
+          dst = "./blockads-dns.txt"
+          domains = set()
+          domain_re = re.compile(r"^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$")
 
-        # 3. 添加所有修改（包括新生成的规则文件、更新的脚本等）
-        git add .
+          with open(src, "r", encoding="utf-8", errors="ignore") as f:
+              for line in f:
+                  line = line.strip()
+                  if not line or line.startswith(("!", "#", "@@", "/", "$")):
+                      continue
 
-        # 4. 检查是否有文件变动
-        if git diff --staged --quiet; then
-          echo "No changes to commit."
-        else
-          git commit -m "Auto-update rules and assets at ${CURRENT_TIME}"
-          git push origin script
-        fi
+                  m = re.match(r"^\|\|([^\^]+)\^", line, re.IGNORECASE)
+                  if not m:
+                      continue
 
-    - name: Auto Build
-      continue-on-error: true
-      run: |
-        if [ -n "${{ secrets.CF_TOKEN }}" ]; then
-          curl -X POST "${{ secrets.CF_TOKEN }}"
-        fi
+                  raw = m.group(1).strip().lower()
+                  if raw.startswith("*."):
+                      cand = raw[2:].strip(".")
+                  elif "*" in raw:
+                      continue
+                  else:
+                      cand = raw.strip(".")
 
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        repository: ${{ github.repository }}
-        retain_days: 2
-        keep_minimum_runs: 5
+                  if domain_re.match(cand):
+                      domains.add(cand)
+
+          with open(dst, "w", encoding="utf-8", newline="\n") as out:
+              out.write("! Title: BlockAds Offline DNS Rules\n")
+              out.write(f"! Count: {len(domains)}\n")
+              for d in sorted(domains):
+                  out.write(f"||{d}^\n")
+          EOF
+            echo "Generated $OUT_DNS with $(grep -c '^\|\|' "$OUT_DNS" || echo 0) rules."
+          else
+            echo "Source DNS file $SRC_DNS not found, skipping BlockAds DNS generation."
+          fi
+
+      - name: Update other rules
+        run: |
+          mkdir -p rules
+          cd rules
+          rm -f *.txt
+          wget -q https://raw.githubusercontent.com/damengzhu/banad/main/jiekouAD.txt || echo "Download failed"
+          cd ../
+
+      - name: Commit and Push rules to script branch
+        run: |
+          # 1. 获取当前时间标签
+          CURRENT_TIME=$(TZ=UTC-8 date +"%Y-%m-%d %H:%M:%S")
+
+          # 2. 配置 Git 身份
+          git config --local user.name "actions"
+          git config --local user.email "action@github.com"
+
+          # 3. 添加所有修改（包括新生成的规则文件、更新的脚本等）
+          git add .
+
+          # 4. 检查是否有文件变动
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update rules and assets at ${CURRENT_TIME}"
+            git push origin script
+          fi
+
+      - name: Auto Build
+        continue-on-error: true
+        run: |
+          if [ -n "${{ secrets.CF_TOKEN }}" ]; then
+            curl -X POST "${{ secrets.CF_TOKEN }}"
+          fi
+
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 2
+          keep_minimum_runs: 5
