@@ -7,7 +7,7 @@
 ! Description: Based on the Standard Edition List, with additional filters.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-24 13:11:17(GMT+8)
+! Version: 2026-11-24 13:22:48(GMT+8)
 ! Total count: 741238
 ###AC_ad
 ###AD_160
