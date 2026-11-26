@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-26 02:32:56(GMT+8)
-! Total count: 39649
+! Version: 2026-11-26 15:38:00(GMT+8)
+! Total count: 39655
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -29460,6 +29460,7 @@ zzzyk.com###Tinfo
 ||jqtkzuco.xyz^
 ||jquery.envi-met.com.cn^
 ||jqz8z7gqxw.com^
+||jqzck6m0vv.com^
 ||jr9v5lx1ro.com^
 ||jrds.net.cn^
 ||jrge.cn^
@@ -32069,6 +32070,7 @@ zzzyk.com###Tinfo
 ||npuwalz.com^
 ||npzc1yzag7.com^
 ||npzjrlkmmjjtxe.com^
+||nq2b2hvkni.com^
 ||nq6jitu4y.com^
 ||nqbcf.cn/html/top
 ||nqdufv.xyz^
@@ -33685,6 +33687,7 @@ zzzyk.com###Tinfo
 ||qunlove.com^*.gif
 ||qunphoty.com^
 ||quoits96.top^
+||quotient68.com^
 ||quotient75.com^
 ||qurl.f.360.cn^
 ||qushucheng.com/public/
@@ -34060,6 +34063,7 @@ zzzyk.com###Tinfo
 ||rigidrobin.com^
 ||rigidveil.com^
 ||rigorlab.com^
+||riilabmhzs.icu^
 ||riju.com/pr/$domain=jpfans.com|jpseek.com
 ||rilletsshivoo.com^
 ||rilwzsit.icu^
@@ -34544,6 +34548,7 @@ zzzyk.com###Tinfo
 ||sdefx.cloud/js/acheck.js
 ||sdfgbuy.com^
 ||sdfyiu.com^
+||sdgugmgkcwtaij.com^
 ||sdhjueue.com^
 ||sdhuawen.cn^
 ||sdk.51.la^
@@ -36506,6 +36511,7 @@ zzzyk.com###Tinfo
 ||tu3921276844.cc^
 ||tu4038097360.cc^
 ||tu6767109513.cc^
+||tu6boqunqq.com^
 ||tubesafari.com/*/new_popunder.js$domain=tubesafari.com
 ||tubeviral.com/Webservices/jsParseLinks.aspx$script,third-party
 ||tubeviral.com/visitScript/$script,third-party
