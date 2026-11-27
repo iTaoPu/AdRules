@@ -7,8 +7,8 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-27 02:15:42(GMT+8)
-! Total count: 39676
+! Version: 2026-11-27 15:35:34(GMT+8)
+! Total count: 39682
 ###ADtip
 ###AdBlockDialog
 ###ChapterView > .slide-baidu
@@ -29371,6 +29371,7 @@ zzzyk.com###Tinfo
 ||jitashe.org/template/jitashe/image/bc/3
 ||jiumai88.com^
 ||jiuyuntian3.cn^
+||jixgkxfhfp.icu^
 ||jixmlx.xyz^
 ||jiyingdm.com/js/loadingshow.html
 ||jiz4pa4hu.com^
@@ -33655,6 +33656,7 @@ zzzyk.com###Tinfo
 ||qtozietgp.com^
 ||qttroiey.com^
 ||qty00vcqh8.com^
+||quadrant59.com^
 ||quaigloo.com^
 ||quailtree.com^
 ||quaintcan.com^
@@ -34360,6 +34362,7 @@ zzzyk.com###Tinfo
 ||s1gr2198h.com^
 ||s2dcm.com^
 ||s2dln6sdu.com^
+||s2glduwz1.com^
 ||s2plb194m.com^
 ||s2tu.com/images/*.gif
 ||s2v36b902.com^
@@ -37163,6 +37166,7 @@ zzzyk.com###Tinfo
 ||vdo3c.org^
 ||vdrfes.site^
 ||vdxu.cn^
+||ve9gs6j44.com^
 ||vector26060.com^
 ||vegetation67.com^
 ||vegmiedd.com^
@@ -38298,6 +38302,7 @@ zzzyk.com###Tinfo
 ||xgsvpsz7f4.com^
 ||xgzdys.com^
 ||xgzxpdy.com^
+||xh2ei17sy.com^
 ||xh33g.net^
 ||xhayx4v25b.com^
 ||xhckbgvd0.com^
@@ -38806,6 +38811,7 @@ zzzyk.com###Tinfo
 ||yg0051thk.com^
 ||yg4j3py9b.com^
 ||yg6p1tskn.com^
+||ygcmsecmzzhaup.com^
 ||ygg1e0gmc.com^
 ||yghonola.com^
 ||ygwdai.cn^
