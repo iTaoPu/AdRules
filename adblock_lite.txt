@@ -7,7 +7,7 @@
 ! Description: Streamlined Version. Optimized for browsers and low-memory mobile devices.
 ! License: Inherits upstream licenses (GPL-3.0, CC BY-SA 4.0, etc.)
 ! ------------------------------------
-! Version: 2026-11-28 11:58:39(GMT+8)
+! Version: 2026-11-28 15:02:29(GMT+8)
 ! Total count: 39702
 ###ADtip
 ###AdBlockDialog
